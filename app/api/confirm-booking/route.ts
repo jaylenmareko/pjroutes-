@@ -31,21 +31,58 @@ export async function POST(req: NextRequest) {
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL
 
+  const departStart = new Date(flight.depart_start)
+  const departEnd = new Date(flight.depart_end)
+  const dateStr = departStart.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
+  const startTime = departStart.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+  const endTime = departEnd.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+  const departureWindow = `${dateStr}, ${startTime} – ${endTime}`
+  const totalFormatted = `$${((flight.price + fee) / 100).toLocaleString()}`
+  const paymentLabel = paymentMethod === 'ach' ? 'Bank transfer (ACH)' : 'Credit card'
+  const amenities = [
+    flight.has_wifi && 'Wi-Fi',
+    flight.pets_allowed && 'Pets allowed',
+    flight.standup_cabin && 'Stand-up cabin',
+  ].filter(Boolean).join(', ') || 'None'
+
+  const row = (label: string, value: string) =>
+    `<tr><td style="padding:6px 0;color:#6B7280;font-size:14px;width:140px">${label}</td><td style="padding:6px 0;font-size:14px;color:#0A0A0A;font-weight:500">${value}</td></tr>`
+
   // Confirmation to passenger
   await getResend().emails.send({
     from: 'support@pjroutes.com',
     to: passenger.email,
-    subject: `Confirmed: ${flight.from_city} → ${flight.to_city}`,
+    subject: `Booking confirmed — ${flight.from_city} → ${flight.to_city}`,
     html: `
-      <div style="font-family:Inter,sans-serif;max-width:500px;margin:0 auto;padding:24px">
-        <h2 style="color:#0A0A0A;margin-bottom:4px">You're booked.</h2>
-        <p style="color:#6B7280;margin-bottom:24px">The operator will contact you within 2 hours.</p>
-        <div style="background:#F9FAFB;border-radius:12px;padding:16px;margin-bottom:24px">
-          <p style="margin:0 0 8px"><strong>${flight.from_city} → ${flight.to_city}</strong></p>
-          <p style="margin:0 0 4px;color:#6B7280;font-size:14px">Aircraft: ${flight.aircraft_type}</p>
-          <p style="margin:0;color:#6B7280;font-size:14px">Operator: ${flight.operator_name}</p>
+      <div style="font-family:Inter,sans-serif;max-width:540px;margin:0 auto;padding:32px 24px">
+        <p style="font-size:13px;color:#6B7280;margin:0 0 8px">PJRoutes</p>
+        <h1 style="font-size:24px;font-weight:700;color:#0A0A0A;margin:0 0 4px">You're booked.</h1>
+        <p style="color:#6B7280;margin:0 0 28px">The operator will contact you within 2 hours to confirm details.</p>
+
+        <div style="background:#F9FAFB;border-radius:12px;padding:20px;margin-bottom:24px">
+          <p style="font-size:18px;font-weight:700;color:#0A0A0A;margin:0 0 16px">${flight.from_city} (${flight.from_airport}) → ${flight.to_city} (${flight.to_airport})</p>
+          <table style="width:100%;border-collapse:collapse">
+            ${row('Date', dateStr)}
+            ${row('Departure window', `${startTime} – ${endTime}`)}
+            ${row('Aircraft', `${flight.aircraft_type}`)}
+            ${row('Tail number', flight.aircraft_tail)}
+            ${row('Passengers', `${passenger.count}`)}
+            ${row('Amenities', amenities)}
+            ${row('Operator', flight.operator_name)}
+            ${row('Operator phone', flight.operator_phone)}
+          </table>
         </div>
-        <p style="color:#6B7280;font-size:13px">Questions? Reply to this email.</p>
+
+        <div style="background:#F9FAFB;border-radius:12px;padding:20px;margin-bottom:24px">
+          <p style="font-size:15px;font-weight:600;color:#0A0A0A;margin:0 0 12px">Receipt</p>
+          <table style="width:100%;border-collapse:collapse">
+            ${row('Amount charged', totalFormatted)}
+            ${row('Payment method', paymentLabel)}
+            ${row('Booking ID', booking?.id ?? '')}
+          </table>
+        </div>
+
+        <p style="color:#6B7280;font-size:13px;margin:0">Questions? Reply to this email or call the operator directly.</p>
       </div>
     `,
   })
@@ -56,14 +93,40 @@ export async function POST(req: NextRequest) {
     to: flight.operator_email,
     subject: `New booking — ${flight.from_city} → ${flight.to_city}`,
     html: `
-      <div style="font-family:Inter,sans-serif;max-width:500px;margin:0 auto;padding:24px">
-        <h2>New booking on your empty leg.</h2>
-        <div style="background:#F9FAFB;border-radius:12px;padding:16px;margin-bottom:24px">
-          <p><strong>${passenger.name}</strong></p>
-          <p style="color:#6B7280;font-size:14px">${passenger.email} · ${passenger.phone}</p>
-          <p style="color:#6B7280;font-size:14px">${passenger.count} passenger${passenger.count > 1 ? 's' : ''}</p>
+      <div style="font-family:Inter,sans-serif;max-width:540px;margin:0 auto;padding:32px 24px">
+        <p style="font-size:13px;color:#6B7280;margin:0 0 8px">PJRoutes</p>
+        <h1 style="font-size:24px;font-weight:700;color:#0A0A0A;margin:0 0 4px">New booking on your empty leg.</h1>
+        <p style="color:#6B7280;margin:0 0 28px">Contact the passenger within 2 hours to confirm.</p>
+
+        <div style="background:#F9FAFB;border-radius:12px;padding:20px;margin-bottom:24px">
+          <p style="font-size:15px;font-weight:600;color:#0A0A0A;margin:0 0 12px">Passenger</p>
+          <table style="width:100%;border-collapse:collapse">
+            ${row('Name', passenger.name)}
+            ${row('Email', passenger.email)}
+            ${row('Phone', passenger.phone)}
+            ${row('Passengers', `${passenger.count}`)}
+          </table>
         </div>
-        <p style="color:#6B7280">Please contact the passenger within 2 hours to confirm.</p>
+
+        <div style="background:#F9FAFB;border-radius:12px;padding:20px;margin-bottom:24px">
+          <p style="font-size:15px;font-weight:600;color:#0A0A0A;margin:0 0 12px">Flight</p>
+          <table style="width:100%;border-collapse:collapse">
+            ${row('Route', `${flight.from_city} (${flight.from_airport}) → ${flight.to_city} (${flight.to_airport})`)}
+            ${row('Departure window', departureWindow)}
+            ${row('Aircraft', `${flight.aircraft_type} · ${flight.aircraft_tail}`)}
+          </table>
+        </div>
+
+        <div style="background:#F9FAFB;border-radius:12px;padding:20px;margin-bottom:24px">
+          <p style="font-size:15px;font-weight:600;color:#0A0A0A;margin:0 0 12px">Booking</p>
+          <table style="width:100%;border-collapse:collapse">
+            ${row('Amount collected', totalFormatted)}
+            ${row('Payment method', paymentLabel)}
+            ${row('Booking ID', booking?.id ?? '')}
+          </table>
+        </div>
+
+        <p style="color:#6B7280;font-size:13px;margin:0">Questions? Contact PJRoutes at support@pjroutes.com.</p>
       </div>
     `,
   })
