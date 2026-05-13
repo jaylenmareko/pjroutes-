@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #0A0A0A;
+  --color-primary-hover: #2A2A2A;
+  --color-primary-light: #F5F5F5;
+  --color-ink: #0A0A0A;
+  --color-muted: #6B7280;
+  --color-border: #E5E7EB;
+  --color-surface: #F9FAFB;
+  --font-sans: Inter, system-ui, sans-serif;
+  --shadow-card: 0 1px 3px 0 rgba(0,0,0,0.08), 0 1px 2px -1px rgba(0,0,0,0.04);
+  --shadow-card-hover: 0 4px 16px -2px rgba(0,0,0,0.14);
+  --shadow-btn: 0 8px 22px -6px rgba(0,0,0,0.35);
+}
+
+@layer base {
+  body {
+    font-family: Inter, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    color: #0A0A0A;
+    background: #ffffff;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-primary-hover hover:scale-[1.02] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed;
+    box-shadow: var(--shadow-btn);
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-border bg-white px-6 py-3 text-sm font-semibold text-ink transition-all hover:bg-surface active:scale-[0.99];
+  }
+  .input {
+    @apply w-full rounded-2xl border border-border bg-white px-4 py-3 text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary/10 focus:border-primary transition-colors;
+  }
+  .card {
+    @apply bg-white rounded-2xl border border-border;
+    box-shadow: var(--shadow-card);
+    transition: box-shadow 0.2s ease;
+  }
+  .card:hover {
+    box-shadow: var(--shadow-card-hover);
+  }
+}
