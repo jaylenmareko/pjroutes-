@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
-import { resend } from '@/lib/resend'
+import { getResend } from '@/lib/resend'
 
 export async function POST(req: NextRequest) {
   const { flightId, paymentIntentId, paymentMethod, passenger } = await req.json()
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
   const appUrl = process.env.NEXT_PUBLIC_APP_URL
 
   // Confirmation to passenger
-  await resend.emails.send({
+  await getResend().emails.send({
     from: 'support@pjroutes.com',
     to: passenger.email,
     subject: `Confirmed: ${flight.from_city} → ${flight.to_city}`,
@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
   })
 
   // Notify operator
-  await resend.emails.send({
+  await getResend().emails.send({
     from: 'support@pjroutes.com',
     to: flight.operator_email,
     subject: `New booking — ${flight.from_city} → ${flight.to_city}`,
@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
   })
 
   // Follow-up after 24h — "other routes you might like"
-  await resend.emails.send({
+  await getResend().emails.send({
     from: 'support@pjroutes.com',
     to: passenger.email,
     subject: 'More empty legs on your routes',

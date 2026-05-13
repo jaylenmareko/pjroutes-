@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
-import { resend } from '@/lib/resend'
+import { getResend } from '@/lib/resend'
 
 export async function POST(req: NextRequest) {
   const body = await req.json()
@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
 
   if (error) return NextResponse.json({ error: error.message }, { status: 400 })
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: 'support@pjroutes.com',
     to: process.env.ADMIN_EMAIL || 'support@pjroutes.com',
     subject: `New listing — ${body.from_city} → ${body.to_city}`,
