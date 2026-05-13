@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/clients/supabase-browser'
-import AuthModal from './AuthModal'
+import AuthModal from '@/components/auth/AuthModal'
 
 export default function ListFlightButton() {
   const router = useRouter()

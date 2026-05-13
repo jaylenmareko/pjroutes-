@@ -1,13 +1,13 @@
-export const dynamic = 'force-dynamic'
+﻿export const dynamic = 'force-dynamic'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase'
-import { DEMO_FLIGHTS } from '@/lib/demo-flights'
+import { supabase } from '@/lib/clients/supabase'
+import { DEMO_FLIGHTS } from '@/lib/data/demo-flights'
 import { Flight } from '@/lib/types'
 import { Shield, Wifi, PawPrint, ArrowLeft, Share2, Bookmark, ArrowRight, ArrowUpRight } from 'lucide-react'
 import { formatPrice, formatDate, formatTime, JET_SIZE_LABEL } from '@/lib/utils'
-import PhotoGallery from '@/components/PhotoGallery'
-import BookNowButton from '@/components/BookNowButton'
+import PhotoGallery from '@/components/flights/PhotoGallery'
+import BookNowButton from '@/components/ui/BookNowButton'
 
 const PLATFORM_FEE = 0.25
 

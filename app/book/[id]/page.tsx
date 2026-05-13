@@ -1,11 +1,11 @@
-'use client'
+﻿'use client'
 import { useState, useEffect, use } from 'react'
 import { useRouter } from 'next/navigation'
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { Shield, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase-browser'
+import { createClient } from '@/lib/clients/supabase-browser'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
 

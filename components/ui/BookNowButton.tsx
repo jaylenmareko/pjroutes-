@@ -1,7 +1,7 @@
 ﻿'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import AuthModal from './AuthModal'
+import AuthModal from '@/components/auth/AuthModal'
 import { createClient } from '@/lib/clients/supabase-browser'
 
 interface Props {
