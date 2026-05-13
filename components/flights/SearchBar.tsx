@@ -1,8 +1,8 @@
-'use client'
+﻿'use client'
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { Search } from 'lucide-react'
-import { searchAirports, Airport } from '@/lib/airports'
+import { searchAirports, Airport } from '@/lib/data/airports'
 
 interface AirportInputProps {
   label: string

@@ -1,8 +1,8 @@
-'use client'
+﻿'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { X, Mail } from 'lucide-react'
-import { createClient } from '@/lib/supabase-browser'
+import { createClient } from '@/lib/clients/supabase-browser'
 
 interface Props {
   open: boolean

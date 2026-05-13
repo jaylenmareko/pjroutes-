@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { stripe } from '@/lib/stripe'
-import { supabase } from '@/lib/supabase'
+﻿import { NextRequest, NextResponse } from 'next/server'
+import { stripe } from '@/lib/clients/stripe'
+import { supabase } from '@/lib/clients/supabase'
 
 const PLATFORM_FEE = 0.25
 

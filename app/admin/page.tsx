@@ -1,5 +1,5 @@
-export const dynamic = 'force-dynamic'
-import { supabaseAdmin } from '@/lib/supabase'
+﻿export const dynamic = 'force-dynamic'
+import { supabaseAdmin } from '@/lib/clients/supabase'
 import AdminActions from './AdminActions'
 import { formatPrice, formatDate, formatTime } from '@/lib/utils'
 

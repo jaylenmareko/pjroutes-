@@ -1,8 +1,8 @@
-'use client'
+﻿'use client'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { createClient } from '@/lib/supabase-browser'
+import { createClient } from '@/lib/clients/supabase-browser'
 import AuthModal from './AuthModal'
 
 export default function Navbar() {

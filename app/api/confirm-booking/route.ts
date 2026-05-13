@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { supabaseAdmin } from '@/lib/supabase'
-import { getResend } from '@/lib/resend'
+﻿import { NextRequest, NextResponse } from 'next/server'
+import { supabaseAdmin } from '@/lib/clients/supabase'
+import { getResend } from '@/lib/clients/resend'
 
 export async function POST(req: NextRequest) {
   const { flightId, paymentIntentId, paymentMethod, passenger } = await req.json()

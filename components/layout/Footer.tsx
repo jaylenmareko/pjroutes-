@@ -1,8 +1,8 @@
-'use client'
+﻿'use client'
 import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@/lib/supabase-browser'
+import { createClient } from '@/lib/clients/supabase-browser'
 import AuthModal from './AuthModal'
 
 export default function Footer() {

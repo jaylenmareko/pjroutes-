@@ -1,4 +1,4 @@
-import FAQ from '@/components/FAQ'
+﻿import FAQ from '@/components/ui/FAQ'
 import Link from 'next/link'
 
 const BUYER_FAQS = [

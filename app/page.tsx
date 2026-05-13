@@ -1,11 +1,11 @@
-export const dynamic = 'force-dynamic'
+﻿export const dynamic = 'force-dynamic'
 import Link from 'next/link'
-import SearchBar from '@/components/SearchBar'
-import FlightCard from '@/components/FlightCard'
-import AlertSignupForm from '@/components/AlertSignupForm'
-import { supabase } from '@/lib/supabase'
+import SearchBar from '@/components/flights/SearchBar'
+import FlightCard from '@/components/flights/FlightCard'
+import AlertSignupForm from '@/components/ui/AlertSignupForm'
+import { supabase } from '@/lib/clients/supabase'
 import { Flight } from '@/lib/types'
-import { DEMO_FLIGHTS } from '@/lib/demo-flights'
+import { DEMO_FLIGHTS } from '@/lib/data/demo-flights'
 import { Users, Zap, Shield, RefreshCw } from 'lucide-react'
 
 async function getFeaturedFlights(): Promise<Flight[]> {
