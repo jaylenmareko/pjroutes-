@@ -10,6 +10,7 @@ const initialForm = {
   aircraft_type: '', aircraft_tail: '',
   jet_size: 'light',
   has_wifi: false, pets_allowed: false, standup_cabin: false,
+  fbo_address: '',
   operator_name: '', operator_email: '', operator_phone: '',
 }
 
@@ -161,6 +162,10 @@ export default function OperatorPage() {
               <div>
                 <label className="block text-xs text-muted mb-1">Phone</label>
                 <input className="input" required value={form.operator_phone} onChange={e => set('operator_phone', e.target.value)} />
+              </div>
+              <div>
+                <label className="block text-xs text-muted mb-1">FBO address <span className="text-muted/60">(optional — sent to passengers in their confirmation email)</span></label>
+                <input className="input" placeholder="e.g. Signature Flight Support, 8008 Lemmon Ave, Dallas TX" value={form.fbo_address} onChange={e => set('fbo_address', e.target.value)} />
               </div>
             </div>
           </div>
