@@ -10,8 +10,8 @@ export default function SuccessPage() {
           </svg>
         </div>
         <h1 className="text-3xl font-extrabold text-ink mb-2">You&apos;re booked.</h1>
-        <p className="text-muted mb-2">Check your email for confirmation.</p>
-        <p className="text-muted text-sm mb-8">The operator will contact you within 2 hours to confirm all details.</p>
+        <p className="text-muted mb-2">Check your email for your receipt and flight details.</p>
+        <p className="text-muted text-sm mb-8">The operator will send your FBO address and departure window shortly.</p>
         <Link href="/flights" className="btn-primary">Browse more flights</Link>
       </div>
     </div>

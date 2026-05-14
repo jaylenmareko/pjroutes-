@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
       <div style="font-family:Inter,sans-serif;max-width:540px;margin:0 auto;padding:32px 24px">
         <p style="font-size:13px;color:#6B7280;margin:0 0 8px">PJRoutes</p>
         <h1 style="font-size:24px;font-weight:700;color:#0A0A0A;margin:0 0 4px">You're booked.</h1>
-        <p style="color:#6B7280;margin:0 0 28px">The operator will contact you within 2 hours to confirm details.</p>
+        <p style="color:#6B7280;margin:0 0 28px">Your booking is confirmed. The operator will send your FBO address and departure window shortly.</p>
 
         <div style="background:#F9FAFB;border-radius:12px;padding:20px;margin-bottom:24px">
           <p style="font-size:18px;font-weight:700;color:#0A0A0A;margin:0 0 16px">${flight.from_city} (${flight.from_airport}) → ${flight.to_city} (${flight.to_airport})</p>
@@ -96,7 +96,7 @@ export async function POST(req: NextRequest) {
       <div style="font-family:Inter,sans-serif;max-width:540px;margin:0 auto;padding:32px 24px">
         <p style="font-size:13px;color:#6B7280;margin:0 0 8px">PJRoutes</p>
         <h1 style="font-size:24px;font-weight:700;color:#0A0A0A;margin:0 0 4px">New booking on your empty leg.</h1>
-        <p style="color:#6B7280;margin:0 0 28px">Contact the passenger within 2 hours to confirm.</p>
+        <p style="color:#6B7280;margin:0 0 28px">Send the passenger their FBO address and departure window to complete their experience.</p>
 
         <div style="background:#F9FAFB;border-radius:12px;padding:20px;margin-bottom:24px">
           <p style="font-size:15px;font-weight:600;color:#0A0A0A;margin:0 0 12px">Passenger</p>

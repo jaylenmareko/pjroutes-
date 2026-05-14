@@ -6,7 +6,7 @@ const BUYER_FAQS = [
   { q: 'How do I find empty leg flights on PJRoutes?', a: 'Use the search bar on the homepage or browse routes. Enter your origin, destination, and preferred date. You can also set a route alert — we\'ll email you the moment a matching flight lists.' },
   { q: 'How much do empty leg flights cost?', a: 'Prices are set by operators directly and vary by route, aircraft type, and timing. You\'ll typically see significant discounts compared to standard charter rates. PJRoutes charges no additional platform fee — what the operator lists is what you pay.' },
   { q: 'Are all operators on PJRoutes certified?', a: 'Yes. Every operator must hold an active FAA Part 135 Air Carrier Certificate. We verify this before any listing goes live.' },
-  { q: 'What happens after I book?', a: 'The operator will contact you within 2 hours to confirm all flight details. You\'ll also receive an email confirmation immediately after booking.' },
+  { q: 'What happens after I book?', a: 'Your booking is confirmed instantly and you\'ll receive an email with your receipt and flight details. The operator then sends your FBO address and departure window.' },
   { q: 'Can I split the cost with others?', a: 'Yes — you book the entire aircraft, so you can bring as many passengers as the jet holds. Splitting the cost across a group often makes it comparable to or cheaper than business class.' },
   { q: 'What if the operator cancels?', a: 'If the operator cancels the flight, you receive a full refund. No questions asked.' },
   { q: 'Can I pay by bank transfer?', a: 'Yes. At checkout you can pay by credit card or ACH bank transfer. Bank transfer has a significantly lower processing fee, which is shown transparently at checkout.' },

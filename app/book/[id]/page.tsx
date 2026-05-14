@@ -203,7 +203,7 @@ function BookingForm({ flightId }: { flightId: string }) {
 
           <div className="flex items-center justify-center gap-1.5 text-xs text-muted">
             <Shield size={11} />
-            Secured by Stripe · Operator confirms within 2 hours
+            Secured by Stripe · Booking confirmed instantly
           </div>
         </form>
       </div>
