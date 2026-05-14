@@ -69,13 +69,7 @@ export default function Footer() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
             {/* Brand */}
             <div className="col-span-2 sm:col-span-1">
-              <div className="flex items-center gap-2">
-                <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
-                  <rect width="28" height="28" rx="6" fill="#0A0A0A"/>
-                  <polygon points="14,7 22,21 6,21" fill="white"/>
-                </svg>
-                <span className="font-bold text-ink">PJRoutes</span>
-              </div>
+              <span className="font-bold text-ink text-lg">PJRoutes</span>
             </div>
 
             {/* Explore */}

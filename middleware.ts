@@ -14,8 +14,8 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // Admin API routes: require same token in header or cookie
-  if (pathname.startsWith('/api/admin')) {
+  // Admin API routes: require same token in header or cookie (exclude login endpoint)
+  if (pathname.startsWith('/api/admin') && pathname !== '/api/admin/login') {
     const adminToken =
       request.cookies.get('admin_token')?.value ||
       request.headers.get('x-admin-token')
