@@ -2,6 +2,29 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+
+  // Admin route: require password cookie
+  if (pathname.startsWith('/admin')) {
+    const adminToken = request.cookies.get('admin_token')?.value
+    const expected = process.env.ADMIN_PASSWORD
+    if (!adminToken || adminToken !== expected) {
+      const loginUrl = new URL('/admin/login', request.url)
+      return NextResponse.redirect(loginUrl)
+    }
+  }
+
+  // Admin API routes: require same token in header or cookie
+  if (pathname.startsWith('/api/admin')) {
+    const adminToken =
+      request.cookies.get('admin_token')?.value ||
+      request.headers.get('x-admin-token')
+    const expected = process.env.ADMIN_PASSWORD
+    if (!adminToken || adminToken !== expected) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+  }
+
   let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
@@ -21,7 +44,6 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  // Refresh session on every request — required by Supabase SSR
   await supabase.auth.getUser()
 
   return supabaseResponse

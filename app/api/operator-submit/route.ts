@@ -1,13 +1,14 @@
 ﻿import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/clients/supabase'
 import { getResend } from '@/lib/clients/resend'
+import { sanitize } from '@/lib/sanitize'
 
 export async function POST(req: NextRequest) {
-  const body = await req.json()
+  const body = sanitize(await req.json()) as Record<string, unknown>
 
   const { data, error } = await supabaseAdmin.from('flights').insert({
     ...body,
-    price: Math.round(parseFloat(body.price) * 100),
+    price: Math.round(parseFloat(body.price as string) * 100),
     status: 'pending',
   }).select().single()
 
