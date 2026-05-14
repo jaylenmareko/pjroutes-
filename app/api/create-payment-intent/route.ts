@@ -1,10 +1,13 @@
 ﻿import { NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/clients/stripe'
 import { supabase } from '@/lib/clients/supabase'
+import { rateLimit, rateLimitResponse } from '@/lib/rate-limit'
 
 const PLATFORM_FEE = 0.25
 
 export async function POST(req: NextRequest) {
+  const ip = req.headers.get('x-forwarded-for') ?? 'unknown'
+  if (!rateLimit(ip, { max: 10, windowMs: 60_000 })) return rateLimitResponse()
   const { flightId, paymentMethod } = await req.json()
 
   const { data: flight } = await supabase

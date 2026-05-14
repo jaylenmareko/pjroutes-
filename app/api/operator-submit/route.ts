@@ -2,8 +2,12 @@
 import { supabaseAdmin } from '@/lib/clients/supabase'
 import { getResend } from '@/lib/clients/resend'
 import { sanitize } from '@/lib/sanitize'
+import { rateLimit, rateLimitResponse } from '@/lib/rate-limit'
 
 export async function POST(req: NextRequest) {
+  const ip = req.headers.get('x-forwarded-for') ?? 'unknown'
+  if (!rateLimit(ip, { max: 5, windowMs: 60_000 })) return rateLimitResponse()
+
   const body = sanitize(await req.json()) as Record<string, unknown>
 
   const { data, error } = await supabaseAdmin.from('flights').insert({
