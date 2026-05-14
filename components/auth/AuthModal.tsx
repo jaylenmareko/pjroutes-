@@ -164,11 +164,11 @@ export default function AuthModal({ open, onClose, redirectTo }: Props) {
               <input
                 type="text"
                 inputMode="numeric"
-                maxLength={6}
+                maxLength={8}
                 className="input text-center text-2xl font-bold tracking-[0.35em] py-4"
                 placeholder="000000"
                 value={code}
-                onChange={e => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                onChange={e => setCode(e.target.value.replace(/\D/g, '').slice(0, 8))}
                 required
                 autoFocus
               />
