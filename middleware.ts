@@ -4,8 +4,8 @@ import { NextResponse, type NextRequest } from 'next/server'
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // Admin route: require password cookie
-  if (pathname.startsWith('/admin')) {
+  // Admin route: require password cookie (exclude the login page itself)
+  if (pathname.startsWith('/admin') && pathname !== '/admin/login') {
     const adminToken = request.cookies.get('admin_token')?.value
     const expected = process.env.ADMIN_PASSWORD
     if (!adminToken || adminToken !== expected) {
