@@ -1,30 +1,10 @@
 ﻿export const dynamic = 'force-dynamic'
 import Link from 'next/link'
 import SearchBar from '@/components/flights/SearchBar'
-import FlightCard from '@/components/flights/FlightCard'
 import AlertSignupForm from '@/components/ui/AlertSignupForm'
-import { supabase } from '@/lib/clients/supabase'
-import { Flight } from '@/lib/types'
-import { DEMO_FLIGHTS } from '@/lib/data/demo-flights'
 import { Users, Zap, Shield, RefreshCw } from 'lucide-react'
 
-async function getFeaturedFlights(): Promise<Flight[]> {
-  try {
-    const { data } = await supabase
-      .from('flights')
-      .select('*')
-      .eq('status', 'published')
-      .order('depart_start', { ascending: true })
-      .limit(4)
-    return data?.length ? data : DEMO_FLIGHTS
-  } catch {
-    return DEMO_FLIGHTS
-  }
-}
-
 export default async function HomePage() {
-  const featured = await getFeaturedFlights()
-
   return (
     <>
       {/* ── HERO ── */}
@@ -75,30 +55,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── FLIGHTS DEPARTING SOON ── */}
-      {featured.length > 0 ? (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="text-2xl font-bold text-ink">
-                <span className="text-muted">Flights </span>Departing Soon
-              </h2>
-              <p className="text-sm text-muted mt-1">Live listings from verified operators.</p>
-            </div>
-            <Link href="/flights" className="text-sm font-medium text-primary hover:underline">View all →</Link>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {featured.map(f => <FlightCard key={f.id} flight={f} layout="grid" />)}
-          </div>
-        </section>
-      ) : (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-          <div className="text-5xl mb-4 opacity-10">✈</div>
-          <h2 className="text-xl font-semibold text-ink mb-2">New flights listed daily</h2>
-          <p className="text-muted text-sm mb-6">Set a route alert and we&apos;ll notify you the moment one matches.</p>
-          <Link href="/flights" className="btn-primary">Browse All Flights</Link>
-        </section>
-      )}
 
       {/* ── WHAT IS AN EMPTY LEG ── */}
       <section className="bg-surface py-16">

@@ -80,7 +80,7 @@ export default function Navbar() {
 
           {/* Nav links — centered */}
           <div className="flex-1 flex items-center justify-center gap-1">
-            {link('/flights', 'Browse Routes')}
+            {link('/flights', 'Flights')}
             {userEmail && (
               <>
                 <button
