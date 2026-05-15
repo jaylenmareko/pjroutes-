@@ -1,6 +1,7 @@
 ﻿import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/clients/supabase'
 import { getResend } from '@/lib/clients/resend'
+import { stripe } from '@/lib/clients/stripe'
 
 export async function POST(req: NextRequest) {
   const { flightId, paymentIntentId, paymentMethod, passenger } = await req.json()
@@ -10,10 +11,15 @@ export async function POST(req: NextRequest) {
 
   const PLATFORM_FEE = 0.25
   const buyerPrice = Math.round(flight.price * (1 + PLATFORM_FEE))
-  const stripeFee = paymentMethod === 'ach'
-    ? Math.min(500, Math.round(buyerPrice * 0.008))
-    : Math.round(buyerPrice * 0.029 + 30)
-  const fee = buyerPrice - flight.price + stripeFee
+  const fee = buyerPrice - flight.price
+
+  // Pull receipt URL from Stripe charge
+  let receiptUrl = ''
+  try {
+    const intent = await stripe.paymentIntents.retrieve(paymentIntentId, { expand: ['latest_charge'] })
+    const charge = intent.latest_charge as { receipt_url?: string } | null
+    receiptUrl = charge?.receipt_url ?? ''
+  } catch { /* non-fatal */ }
 
   const { data: booking } = await supabaseAdmin.from('bookings').insert({
     flight_id: flightId,
@@ -23,7 +29,7 @@ export async function POST(req: NextRequest) {
     passengers: passenger.count,
     payment_intent_id: paymentIntentId,
     payment_method: paymentMethod,
-    amount: flight.price + fee,
+    amount: buyerPrice,
     status: 'confirmed',
   }).select().single()
 
@@ -37,7 +43,7 @@ export async function POST(req: NextRequest) {
   const startTime = departStart.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
   const endTime = departEnd.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
   const departureWindow = `${dateStr}, ${startTime} – ${endTime}`
-  const totalFormatted = `$${((flight.price + fee) / 100).toLocaleString()}`
+  const totalFormatted = `$${(buyerPrice / 100).toLocaleString()}`
   const paymentLabel = paymentMethod === 'ach' ? 'Bank transfer (ACH)' : 'Credit card'
   const amenities = [
     flight.has_wifi && 'Wi-Fi',
@@ -80,6 +86,7 @@ export async function POST(req: NextRequest) {
             ${row('Amount charged', totalFormatted)}
             ${row('Payment method', paymentLabel)}
             ${row('Booking ID', booking?.id ?? '')}
+            ${receiptUrl ? `<tr><td style="padding:6px 0;color:#6B7280;font-size:14px;width:140px">Receipt</td><td style="padding:6px 0;font-size:14px;"><a href="${receiptUrl}" style="color:#8C1C1C;font-weight:500">View receipt →</a></td></tr>` : ''}
           </table>
         </div>
 
