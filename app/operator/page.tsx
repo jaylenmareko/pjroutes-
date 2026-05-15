@@ -1,7 +1,6 @@
 'use client'
 import { useState, useRef } from 'react'
 import { Shield, Upload, X } from 'lucide-react'
-import { createClient } from '@/lib/clients/supabase-browser'
 
 const initialForm = {
   from_city: '', from_airport: '', from_state: '',
@@ -35,16 +34,15 @@ export default function OperatorPage() {
     if (!toUpload.length) return
 
     setUploading(true)
-    const supabase = createClient()
     const uploaded: { url: string; name: string }[] = []
 
     for (const file of toUpload) {
-      const ext = file.name.split('.').pop()
-      const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
-      const { error } = await supabase.storage.from('flight-photos').upload(path, file, { upsert: false })
-      if (!error) {
-        const { data } = supabase.storage.from('flight-photos').getPublicUrl(path)
-        uploaded.push({ url: data.publicUrl, name: file.name })
+      const fd = new FormData()
+      fd.append('file', file)
+      const res = await fetch('/api/upload-photo', { method: 'POST', body: fd })
+      if (res.ok) {
+        const { url } = await res.json()
+        uploaded.push({ url, name: file.name })
       }
     }
 
