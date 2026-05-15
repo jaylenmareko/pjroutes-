@@ -200,9 +200,9 @@ export default function OperatorPage() {
                     type="file"
                     accept="image/*"
                     multiple
-                    className="hidden"
                     onChange={handlePhotoChange}
                     disabled={uploading}
+                    style={{ position: 'absolute', width: 1, height: 1, opacity: 0, overflow: 'hidden', pointerEvents: 'none' }}
                   />
                   <Upload size={18} />
                   <span className="text-xs font-medium">
