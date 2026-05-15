@@ -146,7 +146,7 @@ function BookingForm({ flightId, flight, total, clientSecret }: {
 
 function BookingWrapper({ flightId }: { flightId: string }) {
   const [clientSecret, setClientSecret] = useState('')
-  const [flight, setFlight] = useState<{ price: number; from_city: string; to_city: string; seats: number } | null>(null)
+  const [flight, setFlight] = useState<{ price: number; from_city: string; to_city: string; seats: number; isDemo?: boolean } | null>(null)
   const [total, setTotal] = useState(0)
 
   useEffect(() => {
@@ -154,7 +154,7 @@ function BookingWrapper({ flightId }: { flightId: string }) {
   }, [flightId])
 
   useEffect(() => {
-    if (!flight) return
+    if (!flight || flight.isDemo) return
     fetch('/api/create-payment-intent', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -165,13 +165,33 @@ function BookingWrapper({ flightId }: { flightId: string }) {
     })
   }, [flightId, flight])
 
-  if (!clientSecret || !flight) {
+  if (!flight) {
     return (
       <div className="pt-14 min-h-screen bg-white">
-        <div className="max-w-lg mx-auto px-4 py-10">
-          <div className="space-y-4">
-            {[1, 2, 3].map(i => <div key={i} className="h-32 bg-surface rounded-2xl animate-pulse" />)}
-          </div>
+        <div className="max-w-lg mx-auto px-4 py-10 space-y-4">
+          {[1, 2, 3].map(i => <div key={i} className="h-32 bg-surface rounded-2xl animate-pulse" />)}
+        </div>
+      </div>
+    )
+  }
+
+  if (flight.isDemo) {
+    return (
+      <div className="pt-14 min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center max-w-md px-4">
+          <h1 className="text-2xl font-extrabold text-ink mb-2">Sample listing</h1>
+          <p className="text-muted text-sm mb-6">This is a placeholder flight. Real operator listings are bookable — browse available flights to find one.</p>
+          <Link href="/flights" className="btn-primary">Browse real flights</Link>
+        </div>
+      </div>
+    )
+  }
+
+  if (!clientSecret) {
+    return (
+      <div className="pt-14 min-h-screen bg-white">
+        <div className="max-w-lg mx-auto px-4 py-10 space-y-4">
+          {[1, 2, 3].map(i => <div key={i} className="h-32 bg-surface rounded-2xl animate-pulse" />)}
         </div>
       </div>
     )
