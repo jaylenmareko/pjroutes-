@@ -3,14 +3,19 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
+  const adminToken = request.cookies.get('admin_token')?.value
+  const expected = process.env.ADMIN_PASSWORD
+  const isValidAdmin = adminToken && adminToken === expected
+
+  // If logged in as admin, lock to /admin/* only
+  if (isValidAdmin && !pathname.startsWith('/admin') && !pathname.startsWith('/api/admin') && !pathname.startsWith('/api/')) {
+    return NextResponse.redirect(new URL('/admin', request.url))
+  }
 
   // Admin route: require password cookie (exclude the login page itself)
   if (pathname.startsWith('/admin') && pathname !== '/admin/login') {
-    const adminToken = request.cookies.get('admin_token')?.value
-    const expected = process.env.ADMIN_PASSWORD
-    if (!adminToken || adminToken !== expected) {
-      const loginUrl = new URL('/admin/login', request.url)
-      return NextResponse.redirect(loginUrl)
+    if (!isValidAdmin) {
+      return NextResponse.redirect(new URL('/admin/login', request.url))
     }
   }
 
