@@ -29,7 +29,7 @@ function FlightCard({ f, mode }: { f: Record<string, unknown>; mode: 'pending' |
           <div className="pt-2 border-t border-border mt-2 text-xs text-muted space-y-0.5">
             <div>{f.operator_name as string}</div>
             <div>{f.operator_email as string} · {f.operator_phone as string}</div>
-            {f.fbo_address && <div>FBO: {f.fbo_address as string}</div>}
+            {f.fbo_address ? <div>FBO: {f.fbo_address as string}</div> : null}
           </div>
         </div>
         <AdminActions flightId={f.id as string} mode={mode} />
