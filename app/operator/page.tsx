@@ -11,6 +11,7 @@ const initialForm = {
   jet_size: 'light',
   has_wifi: false, pets_allowed: false, standup_cabin: false,
   fbo_address: '',
+  photo_1: '', photo_2: '', photo_3: '',
   operator_name: '', operator_email: '', operator_phone: '',
 }
 
@@ -132,6 +133,15 @@ export default function OperatorPage() {
                   {label}
                 </label>
               ))}
+            </div>
+            <div className="mt-4 space-y-2">
+              <label className="block text-xs text-muted mb-1">
+                Aircraft photos <span className="text-muted/60">(optional — paste direct image URLs, up to 3)</span>
+              </label>
+              {(['photo_1', 'photo_2', 'photo_3'] as const).map((k, i) => (
+                <input key={k} className="input" placeholder={`Photo ${i + 1} URL`} value={form[k]} onChange={e => set(k, e.target.value)} />
+              ))}
+              <p className="text-xs text-muted/60">If left empty, we&apos;ll automatically source photos matching your aircraft type.</p>
             </div>
           </div>
 
