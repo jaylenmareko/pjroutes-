@@ -56,24 +56,35 @@ export default function AuthModal({ open, onClose, redirectTo }: Props) {
     e.preventDefault()
     setLoading(true)
     setError('')
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: { shouldCreateUser: true },
-    })
-    if (error) { setError(error.message); setLoading(false); return }
-    setStep('code')
-    setCooldown(60)
-    setLoading(false)
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: { shouldCreateUser: true },
+      })
+      if (error) { setError(error.message); return }
+      setStep('code')
+      setCooldown(60)
+    } catch {
+      setError('Something went wrong. Try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   async function verifyCode(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
     setError('')
-    const { error } = await supabase.auth.verifyOtp({ email, token: code, type: 'email' })
-    if (error) { setError('Invalid or expired code. Try again.'); setLoading(false); return }
-    onClose()
-    router.push(redirectTo)
+    try {
+      const { error } = await supabase.auth.verifyOtp({ email, token: code, type: 'email' })
+      if (error) { setError('Invalid or expired code. Try again.'); return }
+      onClose()
+      router.push(redirectTo)
+    } catch {
+      setError('Something went wrong. Try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   if (!open) return null
