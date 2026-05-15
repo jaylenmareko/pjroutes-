@@ -5,21 +5,57 @@ Empty-leg private jet marketplace. Operators submit flights → admin approves �
 
 **Current priority:** Get to first live booking.
 
-**Status:** Deployed and live at `https://pjroutes.vercel.app`
+**Status:** Live at `https://pjroutes.com` — Stripe account under review (2-3 days)
 
 ---
 
 ## Stack
 - **Framework:** Next.js 14 App Router (TypeScript, Tailwind)
 - **Database/Auth:** Supabase — project `rjqwjfzvhkdkdjldlnqs`
-- **Payments:** Stripe (card + ACH bank transfer)
-- **Email:** Resend — `support@pjroutes.com` (pending domain verification)
+- **Payments:** Stripe (ACH bank transfer only)
+- **Email:** Resend — `support@pjroutes.com`
 - **Hosting:** Vercel — connected to `github.com/jaylenmareko/pjroutes-`
 
-## Key Credentials (in `.env.local` — never commit)
-- Supabase URL: `https://rjqwjfzvhkdkdjldlnqs.supabase.co`
-- Admin email: `j7beatss@gmail.com`
-- Stripe: test keys active (swap to live keys before launch)
+---
+
+## Credentials & Logins
+
+### Site
+- **URL:** https://pjroutes.com
+- **Admin panel:** https://pjroutes.com/admin
+- **Admin password:** `***REMOVED***`
+
+### GitHub
+- **Username:** jaylenmareko
+- **Repo:** https://github.com/jaylenmareko/pjroutes-
+
+### Vercel
+- **Dashboard:** https://vercel.com/jaylenmareko/pjroutes-
+- **Login:** GitHub (jaylenmareko)
+
+### Supabase
+- **Dashboard:** https://supabase.com/dashboard/project/rjqwjfzvhkdkdjldlnqs
+- **Project URL:** `https://rjqwjfzvhkdkdjldlnqs.supabase.co`
+- **Anon key:** `***REMOVED***`
+- **Service role key:** `***REMOVED***`
+
+### Stripe
+- **Dashboard (live):** https://dashboard.stripe.com/acct_1TWM1EJVkNqyNYUy/dashboard
+- **Dashboard (sandbox):** https://dashboard.stripe.com/acct_1TWM1qJXkXHZkpBt/test/dashboard
+- **Live publishable key:** `***REMOVED***`
+- **Live secret key:** `***REMOVED***`
+- **Test publishable key:** `pk_test_51TWM1qJXkXHZkpBtLi1rcRuxtfLfFrdXn7qicWHmBUPrZ8y4Pu4amDzGPzLfQEjQRlaHgUr6YFZ8waghZ24XhVC400b2uXAHr0`
+- **Test secret key:** `sk_test_51TWM1qJXkXHZkpBt2O0wXiK43oNYFOviTtD2jy58TkW3VxWMawG4syFPvTVrP9HGrNKjoCaP0Xk6XAhW0c2A8lYi00I2a4gggY`
+- **Status:** Account under review (2-3 days) — live keys set, payments live once review clears
+
+### Resend
+- **Dashboard:** https://resend.com
+- **API key:** `***REMOVED***`
+- **From address:** `support@pjroutes.com`
+
+### Operator / Passenger test accounts
+- **Operator email:** jaylen3282004@gmail.com
+- **Passenger email:** j7beatss@gmail.com
 
 ---
 
@@ -84,10 +120,28 @@ Auth: Email OTP (6-digit codes). "Confirm email" is OFF. No magic links.
 ---
 
 ## What Moves the Needle
-1. Domain live (`pjroutes.com`) → Resend domain verified → real emails working
-2. Stripe live keys swapped in
-3. First operator submits a real flight
-4. First booking
+
+**Done (confirmed working):**
+- ✅ Domain live at `pjroutes.com`
+- ✅ Resend domain verified — emails from `support@pjroutes.com`
+- ✅ OTP auth (8-digit codes, no magic links)
+- ✅ Navbar: auth state, logout, My Bookings, My Listings
+- ✅ My Bookings page (RLS fixed, fetches via service role)
+- ✅ My Listings page (operator view, shows passenger info on booked flights)
+- ✅ Booking flow end-to-end (card + ACH PaymentElement)
+- ✅ Flight disappears from listing after booking
+- ✅ Demo flights removed
+- ✅ Stripe receipt URL embedded in passenger confirmation email
+- ✅ FBO address: operator form field + passenger confirmation email
+- ✅ Broker language removed across all pages
+- ✅ PJR favicon
+
+**Remaining — in order:**
+1. ~~Operator form datetime bug~~ — fixed (ISO conversion on submit)
+2. Swap Stripe live keys in Vercel env vars — keys are ready, Jaylen needs to paste into Vercel dashboard manually (browser auth issue)
+3. Enable Stripe "Send payment instruction emails" — Stripe → Settings → Customer emails → toggle on
+4. Delete test data — dummy bookings + test flights before real operator listings go live
+5. Operator outreach — 402 contacts in `outreach/tier1-operators-enriched.csv`
 
 ---
 
