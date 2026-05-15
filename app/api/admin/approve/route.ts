@@ -4,6 +4,12 @@ import { getResend } from '@/lib/clients/resend'
 
 export async function POST(req: NextRequest) {
   const { id, action } = await req.json()
+
+  if (action === 'remove') {
+    await supabaseAdmin.from('flights').delete().eq('id', id)
+    return NextResponse.json({ ok: true })
+  }
+
   const status = action === 'approve' ? 'published' : 'rejected'
 
   const { data: flight } = await supabaseAdmin
