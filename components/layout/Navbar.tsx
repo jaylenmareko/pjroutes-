@@ -107,16 +107,22 @@ export default function Navbar() {
                 {dropdownOpen && (
                   <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-border rounded-xl shadow-lg py-1 z-50">
                     <button
-                      onClick={() => { router.push('/operator'); setDropdownOpen(false) }}
-                      className="w-full text-left px-4 py-2 text-sm text-ink hover:bg-surface transition-colors"
-                    >
-                      List a Flight
-                    </button>
-                    <button
                       onClick={() => { router.push('/bookings'); setDropdownOpen(false) }}
                       className="w-full text-left px-4 py-2 text-sm text-ink hover:bg-surface transition-colors"
                     >
                       My Bookings
+                    </button>
+                    <button
+                      onClick={() => { router.push('/listings'); setDropdownOpen(false) }}
+                      className="w-full text-left px-4 py-2 text-sm text-ink hover:bg-surface transition-colors"
+                    >
+                      My Listings
+                    </button>
+                    <button
+                      onClick={() => { router.push('/operator'); setDropdownOpen(false) }}
+                      className="w-full text-left px-4 py-2 text-sm text-ink hover:bg-surface transition-colors"
+                    >
+                      List a Flight
                     </button>
                     <div className="border-t border-border my-1" />
                     <button

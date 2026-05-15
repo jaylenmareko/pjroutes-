@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/clients/supabase-browser'
 import Link from 'next/link'
+// createClient used only for session check — data fetched via /api/my-bookings (bypasses RLS)
 
 interface Booking {
   id: string
@@ -35,12 +36,9 @@ export default function BookingsPage() {
         return
       }
       setEmail(data.user.email ?? '')
-      const { data: rows } = await supabase
-        .from('bookings')
-        .select('*, flights(from_city, from_airport, to_city, to_airport, aircraft_type, depart_start, fbo_address)')
-        .eq('passenger_email', data.user.email)
-        .order('created_at', { ascending: false })
-      setBookings((rows as Booking[]) ?? [])
+      const res = await fetch('/api/my-bookings')
+      const rows = await res.json()
+      setBookings(Array.isArray(rows) ? rows : [])
       setLoading(false)
     })
   }, [router])
