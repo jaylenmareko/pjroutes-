@@ -82,14 +82,24 @@ export default function Navbar() {
           <div className="flex-1 flex items-center justify-center gap-1">
             {link('/flights', 'Browse Routes')}
             {userEmail && (
-              <button
-                onClick={() => router.push('/bookings')}
-                className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                  pathname === '/bookings' ? 'bg-surface text-ink' : 'text-muted hover:text-ink'
-                }`}
-              >
-                My Bookings
-              </button>
+              <>
+                <button
+                  onClick={() => router.push('/bookings')}
+                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                    pathname === '/bookings' ? 'bg-surface text-ink' : 'text-muted hover:text-ink'
+                  }`}
+                >
+                  My Bookings
+                </button>
+                <button
+                  onClick={() => router.push('/listings')}
+                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                    pathname === '/listings' ? 'bg-surface text-ink' : 'text-muted hover:text-ink'
+                  }`}
+                >
+                  My Listings
+                </button>
+              </>
             )}
           </div>
 
