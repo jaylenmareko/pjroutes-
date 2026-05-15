@@ -80,8 +80,8 @@ export default function Navbar() {
             PJRoutes
           </Link>
 
-          {/* Nav links — centered */}
-          <div className="flex-1 flex items-center justify-center gap-1">
+          {/* Nav links — hidden on mobile */}
+          <div className="flex-1 hidden sm:flex items-center justify-center gap-1">
             {link('/flights', 'Flights')}
             {userEmail && (
               <>
@@ -104,6 +104,7 @@ export default function Navbar() {
               </>
             )}
           </div>
+          <div className="flex-1 sm:hidden" />
 
           {/* Right */}
           <div className="flex-shrink-0 flex items-center gap-2">
@@ -111,9 +112,14 @@ export default function Navbar() {
               <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setDropdownOpen(o => !o)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium text-muted hover:text-ink transition-colors"
+                  className="flex items-center gap-1.5 px-2 py-1.5 rounded-full text-sm font-medium text-muted hover:text-ink transition-colors"
                 >
-                  <span className="max-w-[140px] truncate">{userEmail}</span>
+                  {/* Desktop: show email */}
+                  <span className="hidden sm:block max-w-[140px] truncate">{userEmail}</span>
+                  {/* Mobile: show initial */}
+                  <span className="sm:hidden w-7 h-7 rounded-full bg-surface flex items-center justify-center text-xs font-bold text-ink">
+                    {userEmail[0].toUpperCase()}
+                  </span>
                   <ChevronDown size={14} />
                 </button>
                 {dropdownOpen && (
@@ -159,7 +165,8 @@ export default function Navbar() {
                 onClick={() => requireAuth('/bookings')}
                 className="px-3 py-1.5 rounded-full text-sm font-medium text-muted hover:text-ink transition-colors"
               >
-                Sign in
+                <span className="hidden sm:inline">Sign in</span>
+                <span className="sm:hidden">Sign in</span>
               </button>
             )}
           </div>
