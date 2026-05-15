@@ -1,7 +1,6 @@
 ﻿export const dynamic = 'force-dynamic'
 import { supabase } from '@/lib/clients/supabase'
 import { Flight } from '@/lib/types'
-import { DEMO_FLIGHTS } from '@/lib/data/demo-flights'
 import FlightCard from '@/components/flights/FlightCard'
 import SearchBar from '@/components/flights/SearchBar'
 import AlertSignupForm from '@/components/ui/AlertSignupForm'
@@ -35,20 +34,6 @@ function applySort(flights: Flight[], sort?: string): Flight[] {
   }
 }
 
-function filterDemo(params: Awaited<Props['searchParams']>): Flight[] {
-  let demo = DEMO_FLIGHTS
-  if (params.from) {
-    const q = cityOnly(params.from).toLowerCase()
-    demo = demo.filter(f => f.from_city.toLowerCase().includes(q) || f.from_airport.toLowerCase().includes(q))
-  }
-  if (params.to) {
-    const q = cityOnly(params.to).toLowerCase()
-    demo = demo.filter(f => f.to_city.toLowerCase().includes(q) || f.to_airport.toLowerCase().includes(q))
-  }
-  if (params.size) demo = demo.filter(f => f.jet_size === params.size)
-  return demo
-}
-
 async function searchFlights(params: Awaited<Props['searchParams']>): Promise<Flight[]> {
   try {
     const fromCity = params.from ? cityOnly(params.from) : undefined
@@ -66,10 +51,9 @@ async function searchFlights(params: Awaited<Props['searchParams']>): Promise<Fl
     }
 
     const { data } = await query
-    if (data?.length) return applySort(data, params.sort)
-    return applySort(filterDemo(params), params.sort)
+    return applySort(data ?? [], params.sort)
   } catch {
-    return applySort(filterDemo(params), params.sort)
+    return []
   }
 }
 

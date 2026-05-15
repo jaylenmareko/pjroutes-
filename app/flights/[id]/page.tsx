@@ -2,7 +2,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/clients/supabase'
-import { DEMO_FLIGHTS } from '@/lib/data/demo-flights'
 import { Flight } from '@/lib/types'
 import { Shield, Wifi, PawPrint, ArrowLeft, Share2, Bookmark, ArrowRight, ArrowUpRight } from 'lucide-react'
 import { formatPrice, formatDate, formatTime, JET_SIZE_LABEL } from '@/lib/utils'
@@ -12,9 +11,6 @@ import BookNowButton from '@/components/ui/BookNowButton'
 const PLATFORM_FEE = 0.25
 
 async function getFlight(id: string): Promise<Flight | null> {
-  const demo = DEMO_FLIGHTS.find(f => f.id === id)
-  if (demo) return demo
-
   try {
     const { data } = await supabase
       .from('flights')
