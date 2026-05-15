@@ -20,7 +20,7 @@ function FlightCard({ f, mode }: { f: Record<string, unknown>; mode: 'pending' |
           <div className="text-lg font-bold text-ink">{f.from_city as string} → {f.to_city as string}</div>
           <div className="text-sm text-muted">{f.from_airport as string} → {f.to_airport as string}</div>
           <div className="text-sm text-muted">{f.aircraft_type as string} · {f.aircraft_tail as string} · {f.seats as number} seats</div>
-          <div className="text-sm text-muted">{formatDate(f.depart_start as string)} · {formatTime(f.depart_start as string)} – {formatTime(f.depart_end as string)}</div>
+          <div className="text-sm text-muted">{formatDate(f.depart_start as string)} · {formatTime(f.depart_start as string)} – {formatTime(f.depart_end as string)} <span className="text-xs opacity-50">(UTC)</span></div>
           <div className="flex items-center gap-3 mt-1">
             <span className="text-sm font-semibold text-ink">{formatPrice(f.price as number)} <span className="text-muted font-normal">operator</span></span>
             <span className="text-muted">→</span>

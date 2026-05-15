@@ -6,6 +6,7 @@ export async function POST(req: NextRequest) {
   const { id, action } = await req.json()
 
   if (action === 'remove') {
+    await supabaseAdmin.from('bookings').delete().eq('flight_id', id)
     await supabaseAdmin.from('flights').delete().eq('id', id)
     return NextResponse.json({ ok: true })
   }
