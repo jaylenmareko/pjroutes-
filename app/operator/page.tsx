@@ -1,6 +1,7 @@
 'use client'
-import { useState } from 'react'
-import { Shield } from 'lucide-react'
+import { useState, useRef } from 'react'
+import { Shield, Upload, X } from 'lucide-react'
+import { createClient } from '@/lib/clients/supabase-browser'
 
 const initialForm = {
   from_city: '', from_airport: '', from_state: '',
@@ -11,7 +12,6 @@ const initialForm = {
   jet_size: 'light',
   has_wifi: false, pets_allowed: false, standup_cabin: false,
   fbo_address: '',
-  photo_1: '', photo_2: '', photo_3: '',
   operator_name: '', operator_email: '', operator_phone: '',
 }
 
@@ -19,9 +19,42 @@ export default function OperatorPage() {
   const [form, setForm] = useState(initialForm)
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [photos, setPhotos] = useState<{ url: string; name: string }[]>([])
+  const [uploading, setUploading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   function set(k: string, v: string | boolean) {
     setForm(f => ({ ...f, [k]: v }))
+  }
+
+  async function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files || [])
+    if (!files.length) return
+    const remaining = 3 - photos.length
+    const toUpload = files.slice(0, remaining)
+    if (!toUpload.length) return
+
+    setUploading(true)
+    const supabase = createClient()
+    const uploaded: { url: string; name: string }[] = []
+
+    for (const file of toUpload) {
+      const ext = file.name.split('.').pop()
+      const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+      const { error } = await supabase.storage.from('flight-photos').upload(path, file, { upsert: false })
+      if (!error) {
+        const { data } = supabase.storage.from('flight-photos').getPublicUrl(path)
+        uploaded.push({ url: data.publicUrl, name: file.name })
+      }
+    }
+
+    setPhotos(p => [...p, ...uploaded].slice(0, 3))
+    setUploading(false)
+    if (fileInputRef.current) fileInputRef.current.value = ''
+  }
+
+  function removePhoto(index: number) {
+    setPhotos(p => p.filter((_, i) => i !== index))
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -30,7 +63,7 @@ export default function OperatorPage() {
     await fetch('/api/operator-submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
+      body: JSON.stringify({ ...form, photos: photos.map(p => p.url) }),
     })
     setSubmitted(true)
     setLoading(false)
@@ -56,7 +89,6 @@ export default function OperatorPage() {
 
   return (
     <div className="pt-14 min-h-screen">
-      {/* Header */}
       <div className="bg-ink text-white py-10 px-4">
         <div className="max-w-2xl mx-auto">
           <h1 className="text-3xl font-extrabold mb-2">List an Empty Leg</h1>
@@ -126,7 +158,7 @@ export default function OperatorPage() {
                 <input type="number" min="1" max="19" className="input" placeholder="6" required value={form.seats} onChange={e => set('seats', e.target.value)} />
               </div>
             </div>
-            <div className="flex gap-6">
+            <div className="flex gap-6 mb-5">
               {[['has_wifi','Wi-Fi'],['pets_allowed','Pets welcome'],['standup_cabin','Stand-up cabin']].map(([k, label]) => (
                 <label key={k} className="flex items-center gap-2 text-sm text-muted cursor-pointer">
                   <input type="checkbox" checked={form[k as keyof typeof form] as boolean} onChange={e => set(k, e.target.checked)} className="rounded border-border accent-primary" />
@@ -134,14 +166,54 @@ export default function OperatorPage() {
                 </label>
               ))}
             </div>
-            <div className="mt-4 space-y-2">
-              <label className="block text-xs text-muted mb-1">
-                Aircraft photos <span className="text-muted/60">(optional — paste direct image URLs, up to 3)</span>
+
+            {/* Photo upload */}
+            <div>
+              <label className="block text-xs text-muted mb-2">
+                Aircraft photos <span className="text-muted/60">(optional, up to 3 — if none added, we source them automatically)</span>
               </label>
-              {(['photo_1', 'photo_2', 'photo_3'] as const).map((k, i) => (
-                <input key={k} className="input" placeholder={`Photo ${i + 1} URL`} value={form[k]} onChange={e => set(k, e.target.value)} />
-              ))}
-              <p className="text-xs text-muted/60">If left empty, we&apos;ll automatically source photos matching your aircraft type.</p>
+
+              {photos.length > 0 && (
+                <div className="grid grid-cols-3 gap-2 mb-3">
+                  {photos.map((p, i) => (
+                    <div key={i} className="relative rounded-xl overflow-hidden aspect-video bg-surface">
+                      <img src={p.url} alt={p.name} className="w-full h-full object-cover" />
+                      <button
+                        type="button"
+                        onClick={() => removePhoto(i)}
+                        className="absolute top-1.5 right-1.5 w-5 h-5 bg-black/60 rounded-full flex items-center justify-center hover:bg-black transition-colors"
+                      >
+                        <X size={10} className="text-white" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {photos.length < 3 && (
+                <>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    className="hidden"
+                    onChange={handlePhotoChange}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploading}
+                    className="w-full border border-dashed border-border rounded-xl py-6 flex flex-col items-center gap-2 text-muted hover:border-primary hover:text-primary transition-colors disabled:opacity-50"
+                  >
+                    <Upload size={18} />
+                    <span className="text-xs font-medium">
+                      {uploading ? 'Uploading...' : `Add photo${photos.length > 0 ? 's' : ''} (${3 - photos.length} remaining)`}
+                    </span>
+                    <span className="text-xs opacity-60">JPG, PNG — from your device or camera</span>
+                  </button>
+                </>
+              )}
             </div>
           </div>
 
@@ -187,7 +259,7 @@ export default function OperatorPage() {
             </div>
           </div>
 
-          <button type="submit" disabled={loading} className="btn-primary w-full justify-center py-4 text-base">
+          <button type="submit" disabled={loading || uploading} className="btn-primary w-full justify-center py-4 text-base">
             {loading ? 'Submitting...' : 'Submit for review'}
           </button>
 

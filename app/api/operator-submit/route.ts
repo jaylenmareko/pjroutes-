@@ -30,17 +30,16 @@ export async function POST(req: NextRequest) {
     ],
   }
 
-  const operatorPhotos = [body.photo_1, body.photo_2, body.photo_3]
-    .filter((url): url is string => typeof url === 'string' && url.trim().length > 0)
+  const operatorPhotos = Array.isArray(body.photos)
+    ? (body.photos as string[]).filter(url => typeof url === 'string' && url.trim().length > 0)
+    : []
 
   const photos = operatorPhotos.length > 0
     ? operatorPhotos
     : FALLBACK_PHOTOS[body.jet_size as string] ?? FALLBACK_PHOTOS.light
 
-  const { photo_1, photo_2, photo_3, ...rest } = body
-
   const { data, error } = await supabaseAdmin.from('flights').insert({
-    ...rest,
+    ...body,
     price: Math.round(parseFloat(body.price as string) * 100),
     photos,
     status: 'pending',
