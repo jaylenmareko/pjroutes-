@@ -1,6 +1,7 @@
 ﻿import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/clients/supabase'
 import { getResend } from '@/lib/clients/resend'
+import Stripe from 'stripe'
 import { stripe } from '@/lib/clients/stripe'
 
 export async function POST(req: NextRequest) {
@@ -17,9 +18,11 @@ export async function POST(req: NextRequest) {
   let receiptUrl = ''
   try {
     const intent = await stripe.paymentIntents.retrieve(paymentIntentId, { expand: ['latest_charge'] })
-    const charge = intent.latest_charge as { receipt_url?: string } | null
+    const charge = intent.latest_charge as Stripe.Charge | null
     receiptUrl = charge?.receipt_url ?? ''
-  } catch { /* non-fatal */ }
+  } catch (err) {
+    console.error('Failed to fetch Stripe receipt URL:', err)
+  }
 
   const { data: booking } = await supabaseAdmin.from('bookings').insert({
     flight_id: flightId,
