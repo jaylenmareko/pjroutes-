@@ -21,6 +21,7 @@ export default function OperatorPage() {
   const [photos, setPhotos] = useState<{ url: string; name: string }[]>([])
   const [uploading, setUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const uploadId = 'photo-upload'
 
   function set(k: string, v: string | boolean) {
     setForm(f => ({ ...f, [k]: v }))
@@ -189,28 +190,26 @@ export default function OperatorPage() {
               )}
 
               {photos.length < 3 && (
-                <>
+                <label
+                  htmlFor={uploadId}
+                  className={`w-full border border-dashed border-border rounded-xl py-6 flex flex-col items-center gap-2 text-muted hover:border-primary hover:text-primary transition-colors cursor-pointer ${uploading ? 'opacity-50 pointer-events-none' : ''}`}
+                >
                   <input
                     ref={fileInputRef}
+                    id={uploadId}
                     type="file"
                     accept="image/*"
                     multiple
                     className="hidden"
                     onChange={handlePhotoChange}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
                     disabled={uploading}
-                    className="w-full border border-dashed border-border rounded-xl py-6 flex flex-col items-center gap-2 text-muted hover:border-primary hover:text-primary transition-colors disabled:opacity-50"
-                  >
-                    <Upload size={18} />
-                    <span className="text-xs font-medium">
-                      {uploading ? 'Uploading...' : `Add photo${photos.length > 0 ? 's' : ''} (${3 - photos.length} remaining)`}
-                    </span>
-                    <span className="text-xs opacity-60">JPG, PNG — from your device or camera</span>
-                  </button>
-                </>
+                  />
+                  <Upload size={18} />
+                  <span className="text-xs font-medium">
+                    {uploading ? 'Uploading...' : `Add photo${photos.length > 0 ? 's' : ''} (${3 - photos.length} remaining)`}
+                  </span>
+                  <span className="text-xs opacity-60">JPG, PNG — from your device or camera</span>
+                </label>
               )}
             </div>
           </div>
