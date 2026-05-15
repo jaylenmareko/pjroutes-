@@ -18,6 +18,7 @@ export default function OperatorPage() {
   const [form, setForm] = useState(initialForm)
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
   const [photos, setPhotos] = useState<{ url: string; name: string }[]>([])
   const [uploading, setUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -58,14 +59,29 @@ export default function OperatorPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    if (!form.depart_start || !form.depart_end) {
+      setError('Please select both a departure start and end time.')
+      return
+    }
     setLoading(true)
-    await fetch('/api/operator-submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...form, photos: photos.map(p => p.url) }),
-    })
-    setSubmitted(true)
-    setLoading(false)
+    setError('')
+    try {
+      const res = await fetch('/api/operator-submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, photos: photos.map(p => p.url) }),
+      })
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        setError(data.error || 'Submission failed. Please check all fields and try again.')
+      } else {
+        setSubmitted(true)
+      }
+    } catch {
+      setError('Something went wrong. Check your connection and try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   if (submitted) {
@@ -255,6 +271,12 @@ export default function OperatorPage() {
               </div>
             </div>
           </div>
+
+          {error && (
+            <div className="rounded-xl bg-red-50 border border-red-100 px-4 py-3 text-sm text-red-600">
+              {error}
+            </div>
+          )}
 
           <button type="submit" disabled={loading || uploading} className="btn-primary w-full justify-center py-4 text-base">
             {loading ? 'Submitting...' : 'Submit for review'}
