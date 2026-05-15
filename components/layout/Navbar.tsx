@@ -12,7 +12,7 @@ export default function Navbar() {
 
   if (pathname.startsWith('/admin')) return null
   const [showAuth, setShowAuth] = useState(false)
-  const [authRedirect, setAuthRedirect] = useState('/bookings')
+  const [authRedirect, setAuthRedirect] = useState('/flights')
   const [userEmail, setUserEmail] = useState<string | null>(null)
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -162,11 +162,10 @@ export default function Navbar() {
             )}
             {!userEmail && (
               <button
-                onClick={() => requireAuth('/bookings')}
+                onClick={() => requireAuth('/flights')}
                 className="px-3 py-1.5 rounded-full text-sm font-medium text-muted hover:text-ink transition-colors"
               >
-                <span className="hidden sm:inline">Sign in</span>
-                <span className="sm:hidden">Sign in</span>
+                Sign in
               </button>
             )}
           </div>
