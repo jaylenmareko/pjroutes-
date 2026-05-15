@@ -21,17 +21,13 @@ export async function POST(req: NextRequest) {
   // Buyer pays operator price + 25% platform fee
   const buyerPrice = Math.round(flight.price * (1 + PLATFORM_FEE))
 
-  // Stripe processing fee (passed to buyer transparently)
-  const stripeFee = paymentMethod === 'ach'
-    ? Math.min(500, Math.round(buyerPrice * 0.008))
-    : Math.round(buyerPrice * 0.029 + 30)
-
+  const stripeFee = Math.round(buyerPrice * 0.029 + 30)
   const total = buyerPrice + stripeFee
 
   const intent = await stripe.paymentIntents.create({
     amount: total,
     currency: 'usd',
-    payment_method_types: paymentMethod === 'ach' ? ['us_bank_account'] : ['card'],
+    payment_method_types: ['card'],
     metadata: {
       flightId,
       operator_payout: flight.price,

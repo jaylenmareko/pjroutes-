@@ -13,7 +13,7 @@ function BookingForm({ flightId }: { flightId: string }) {
   const stripe = useStripe()
   const elements = useElements()
   const router = useRouter()
-  const [paymentMethod, setPaymentMethod] = useState<'card' | 'ach'>('card')
+  const paymentMethod = 'card'
   const [clientSecret, setClientSecret] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -48,32 +48,36 @@ function BookingForm({ flightId }: { flightId: string }) {
     setLoading(true)
     setError('')
 
-    const card = elements.getElement(CardElement)
-    const { paymentIntent, error: stripeError } = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: { card: card! },
-    })
+    try {
+      const card = elements.getElement(CardElement)
+      const { paymentIntent, error: stripeError } = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: { card: card! },
+      })
 
-    if (stripeError) {
-      setError(stripeError.message || 'Payment failed')
-      setLoading(false)
-      return
-    }
+      if (stripeError) {
+        setError(stripeError.message || 'Payment failed')
+        return
+      }
 
-    const res = await fetch('/api/confirm-booking', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        flightId,
-        paymentIntentId: paymentIntent?.id,
-        paymentMethod,
-        passenger: { ...passenger, count: parseInt(passenger.count) },
-      }),
-    })
+      const res = await fetch('/api/confirm-booking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          flightId,
+          paymentIntentId: paymentIntent?.id,
+          paymentMethod,
+          passenger: { ...passenger, count: parseInt(passenger.count) },
+        }),
+      })
 
-    if (res.ok) {
-      router.push('/book/success')
-    } else {
-      setError('Booking confirmation failed. Contact support.')
+      if (res.ok) {
+        router.push('/book/success')
+      } else {
+        setError('Booking confirmation failed. Contact support.')
+      }
+    } catch {
+      setError('Something went wrong. Try again.')
+    } finally {
       setLoading(false)
     }
   }
@@ -81,9 +85,7 @@ function BookingForm({ flightId }: { flightId: string }) {
   const operatorPrice = flight?.price || 0
   const platformFee = Math.round(operatorPrice * 0.25)
   const buyerPrice = operatorPrice + platformFee
-  const stripeFee = paymentMethod === 'ach'
-    ? Math.min(500, Math.round(buyerPrice * 0.008))
-    : Math.round(buyerPrice * 0.029 + 30)
+  const stripeFee = Math.round(buyerPrice * 0.029 + 30)
   const total = buyerPrice + stripeFee
 
   const fmt = (c: number) => `$${(c / 100).toLocaleString()}`
@@ -136,46 +138,16 @@ function BookingForm({ flightId }: { flightId: string }) {
             </select>
           </div>
 
-          {/* Payment method */}
+          {/* Payment */}
           <div className="card p-5 space-y-4">
-            <h2 className="font-semibold text-ink text-sm">Payment method</h2>
-            <div className="grid grid-cols-2 gap-2">
-              {(['card', 'ach'] as const).map(m => (
-                <button
-                  key={m}
-                  type="button"
-                  onClick={() => setPaymentMethod(m)}
-                  className={`p-3 rounded-xl border text-left transition-colors ${
-                    paymentMethod === m
-                      ? 'border-primary bg-primary-light'
-                      : 'border-border hover:border-muted'
-                  }`}
-                >
-                  <div className="text-sm font-medium text-ink mb-0.5">
-                    {m === 'card' ? '💳 Credit card' : '🏦 Bank transfer'}
-                  </div>
-                  <div className={`text-xs ${m === 'ach' ? 'text-green-600 font-medium' : 'text-muted'}`}>
-                    {m === 'card' ? `Processing: ${fmt(stripeFee)}` : `Processing: ${fmt(stripeFee)} · Lower fee`}
-                  </div>
-                </button>
-              ))}
+            <h2 className="font-semibold text-ink text-sm">Card details</h2>
+            <div className="rounded-xl border border-border p-4">
+              <CardElement options={{
+                style: {
+                  base: { fontSize: '14px', color: '#0A0A0A', fontFamily: 'Inter, system-ui, sans-serif', '::placeholder': { color: '#9CA3AF' } }
+                }
+              }} />
             </div>
-
-            {paymentMethod === 'card' && (
-              <div className="rounded-xl border border-border p-4">
-                <CardElement options={{
-                  style: {
-                    base: { fontSize: '14px', color: '#0A0A0A', fontFamily: 'Inter, system-ui, sans-serif', '::placeholder': { color: '#9CA3AF' } }
-                  }
-                }} />
-              </div>
-            )}
-
-            {paymentMethod === 'ach' && (
-              <div className="rounded-xl bg-surface p-4 text-sm text-muted">
-                After clicking Pay, you&apos;ll securely enter your routing and account number via Stripe.
-              </div>
-            )}
           </div>
 
           {/* Price summary */}
