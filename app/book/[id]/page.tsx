@@ -9,10 +9,11 @@ import { createClient } from '@/lib/clients/supabase-browser'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
 
-function BookingForm({ flightId, flight, total }: {
+function BookingForm({ flightId, flight, total, clientSecret }: {
   flightId: string
   flight: { price: number; from_city: string; to_city: string; seats: number }
   total: number
+  clientSecret: string
 }) {
   const stripe = useStripe()
   const elements = useElements()
@@ -42,6 +43,14 @@ function BookingForm({ flightId, flight, total }: {
     }))
 
     try {
+      // Attach receipt email to the payment intent
+      const piId = clientSecret.split('_secret_')[0]
+      await fetch('/api/update-payment-intent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ paymentIntentId: piId, receiptEmail: passenger.email }),
+      })
+
       const { paymentIntent, error: stripeError } = await stripe.confirmPayment({
         elements,
         confirmParams: { return_url: `${window.location.origin}/book/success` },
@@ -188,7 +197,7 @@ function BookingWrapper({ flightId }: { flightId: string }) {
             },
           }}
         >
-          <BookingForm flightId={flightId} flight={flight} total={total} />
+          <BookingForm flightId={flightId} flight={flight} total={total} clientSecret={clientSecret} />
         </Elements>
       </div>
     </div>
