@@ -139,10 +139,17 @@ export default function OperatorPage() {
           <div>
             <Section title="Price" />
             <div>
-              <label className="block text-xs text-muted mb-1">Price (USD)</label>
+              <label className="block text-xs text-muted mb-1">Your price (USD)</label>
               <div className="relative">
                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted text-sm">$</span>
                 <input type="number" min="500" className="input pl-7" placeholder="4,500" required value={form.price} onChange={e => set('price', e.target.value)} />
+              </div>
+              <div className="mt-3 rounded-xl bg-surface border border-border p-4 text-xs text-muted space-y-1">
+                <p className="font-semibold text-ink text-xs">How pricing works</p>
+                <p>You receive 100% of your listed price. PJRoutes adds a 25% fee on top — paid by the customer, not taken from you.</p>
+                <p className="font-mono text-xs pt-1">
+                  $10,000 <span className="text-muted">(your price)</span> + $2,500 <span className="text-muted">(our fee)</span> = $12,500 <span className="text-muted">(customer pays)</span>
+                </p>
               </div>
             </div>
           </div>

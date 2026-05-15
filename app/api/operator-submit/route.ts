@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
       <div style="font-family:Inter,sans-serif;max-width:500px;margin:0 auto;padding:24px">
         <h2>New operator submission.</h2>
         <p><strong>${body.from_city} → ${body.to_city}</strong></p>
-        <p>${body.aircraft_type} · ${body.aircraft_tail} · $${body.price}</p>
+        <p>${body.aircraft_type} · ${body.aircraft_tail} · $${Number(body.price).toLocaleString()}</p>
         <p>${body.operator_name} · ${body.operator_email}</p>
         <a href="${process.env.NEXT_PUBLIC_APP_URL}/admin" style="color:#8C1C1C;font-weight:600">Review in admin →</a>
       </div>
