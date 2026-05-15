@@ -4,7 +4,8 @@ import Link from 'next/link'
 import { supabase } from '@/lib/clients/supabase'
 import { Flight } from '@/lib/types'
 import { Shield, Wifi, PawPrint, ArrowLeft, Share2, Bookmark, ArrowRight, ArrowUpRight } from 'lucide-react'
-import { formatPrice, formatDate, formatTime, JET_SIZE_LABEL } from '@/lib/utils'
+import { formatPrice, JET_SIZE_LABEL } from '@/lib/utils'
+import { LocalTime, LocalDate } from '@/components/ui/LocalTime'
 import PhotoGallery from '@/components/flights/PhotoGallery'
 import BookNowButton from '@/components/ui/BookNowButton'
 
@@ -61,7 +62,7 @@ export default async function FlightDetailPage({ params }: { params: Promise<{ i
               {flight.from_city} → {flight.to_city}
             </h1>
             <p className="text-sm text-muted">
-              {formatDate(flight.depart_start)} · {flight.aircraft_type} · {flight.aircraft_tail}
+              <LocalDate iso={flight.depart_start} /> · {flight.aircraft_type} · {flight.aircraft_tail}
             </p>
           </div>
           <div className="flex items-center gap-2 mt-1">
@@ -82,7 +83,7 @@ export default async function FlightDetailPage({ params }: { params: Promise<{ i
             <div className="grid grid-cols-3 items-center gap-4 py-6 border-y border-border">
               <div>
                 <div className="text-xs text-muted uppercase tracking-wider font-medium mb-1">From</div>
-                <div className="text-3xl font-bold text-ink">{formatTime(flight.depart_start)}</div>
+                <div className="text-3xl font-bold text-ink"><LocalTime iso={flight.depart_start} /></div>
                 <div className="text-sm text-muted mt-1">{flight.from_airport}</div>
                 <div className="text-sm text-muted">{flight.from_city}</div>
               </div>
@@ -97,7 +98,7 @@ export default async function FlightDetailPage({ params }: { params: Promise<{ i
               </div>
               <div className="text-right">
                 <div className="text-xs text-muted uppercase tracking-wider font-medium mb-1">To</div>
-                <div className="text-3xl font-bold text-ink">{formatTime(flight.depart_end)}</div>
+                <div className="text-3xl font-bold text-ink"><LocalTime iso={flight.depart_end} /></div>
                 <div className="text-sm text-muted mt-1">{flight.to_airport}</div>
                 <div className="text-sm text-muted">{flight.to_city}</div>
               </div>
