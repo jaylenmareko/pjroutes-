@@ -66,10 +66,16 @@ export default function OperatorPage() {
     setLoading(true)
     setError('')
     try {
+      const toISO = (v: string) => v ? new Date(v).toISOString() : v
       const res = await fetch('/api/operator-submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, photos: photos.map(p => p.url) }),
+        body: JSON.stringify({
+          ...form,
+          depart_start: toISO(form.depart_start),
+          depart_end: toISO(form.depart_end),
+          photos: photos.map(p => p.url),
+        }),
       })
       if (!res.ok) {
         const data = await res.json().catch(() => ({}))

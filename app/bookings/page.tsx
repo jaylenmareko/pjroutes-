@@ -3,7 +3,10 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/clients/supabase-browser'
 import Link from 'next/link'
-// createClient used only for session check — data fetched via /api/my-bookings (bypasses RLS)
+
+function fmtPrice(cents: number) {
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(cents / 100)
+}
 
 interface Booking {
   id: string
@@ -70,7 +73,7 @@ export default function BookingsPage() {
                     weekday: 'short', month: 'short', day: 'numeric', year: 'numeric',
                   })
                 : '—'
-              const total = `$${(b.amount / 100).toLocaleString()}`
+              const total = fmtPrice(b.amount)
               const method = b.payment_method === 'ach' ? 'ACH' : 'Card'
 
               return (

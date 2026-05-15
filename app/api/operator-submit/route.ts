@@ -10,33 +10,9 @@ export async function POST(req: NextRequest) {
 
   const body = sanitize(await req.json()) as Record<string, unknown>
 
-  // Build photos array — operator URLs first, fallback by jet category
-  const FALLBACK_PHOTOS: Record<string, string[]> = {
-    light: [
-      'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
-      'https://images.unsplash.com/photo-1474302770737-173ee21bab63?w=800&q=80',
-    ],
-    midsize: [
-      'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
-      'https://images.unsplash.com/photo-1474302770737-173ee21bab63?w=800&q=80',
-    ],
-    super_midsize: [
-      'https://images.unsplash.com/photo-1545987796-200677ee1011?w=800&q=80',
-      'https://images.unsplash.com/photo-1474302770737-173ee21bab63?w=800&q=80',
-    ],
-    heavy: [
-      'https://images.unsplash.com/photo-1583206814776-0a7c26fbd4f5?w=800&q=80',
-      'https://images.unsplash.com/photo-1474302770737-173ee21bab63?w=800&q=80',
-    ],
-  }
-
-  const operatorPhotos = Array.isArray(body.photos)
+  const photos = Array.isArray(body.photos)
     ? (body.photos as string[]).filter(url => typeof url === 'string' && url.trim().length > 0)
     : []
-
-  const photos = operatorPhotos.length > 0
-    ? operatorPhotos
-    : FALLBACK_PHOTOS[body.jet_size as string] ?? FALLBACK_PHOTOS.light
 
   const { data, error } = await supabaseAdmin.from('flights').insert({
     ...body,
