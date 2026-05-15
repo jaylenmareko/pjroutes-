@@ -30,7 +30,11 @@ export default async function AdminPage() {
                   <div className="text-sm text-muted">{f.from_airport} → {f.to_airport}</div>
                   <div className="text-sm text-muted">{f.aircraft_type} · {f.aircraft_tail} · {f.seats} seats</div>
                   <div className="text-sm text-muted">{formatDate(f.depart_start)} · {formatTime(f.depart_start)} – {formatTime(f.depart_end)}</div>
-                  <div className="text-sm font-semibold text-ink mt-1">{formatPrice(f.price)}</div>
+                  <div className="flex items-center gap-3 mt-1">
+                    <span className="text-sm font-semibold text-ink">{formatPrice(f.price)} <span className="text-muted font-normal">operator</span></span>
+                    <span className="text-muted">→</span>
+                    <span className="text-sm font-semibold text-primary">{formatPrice(Math.round(f.price * 1.25))} <span className="text-muted font-normal">customer</span></span>
+                  </div>
                   <div className="pt-2 border-t border-border mt-2 text-xs text-muted space-y-0.5">
                     <div>{f.operator_name}</div>
                     <div>{f.operator_email} · {f.operator_phone}</div>
