@@ -16,7 +16,7 @@ export default async function AdminPage() {
   const pending = await getPendingFlights()
 
   return (
-    <div className="pt-14 min-h-screen bg-surface">
+    <div className="min-h-screen bg-surface">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
         <h1 className="text-2xl font-extrabold text-ink mb-1">Admin</h1>
         <p className="text-muted text-sm mb-8">{pending.length} pending listing{pending.length !== 1 ? 's' : ''}</p>

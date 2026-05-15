@@ -9,6 +9,8 @@ import { ChevronDown } from 'lucide-react'
 export default function Navbar() {
   const pathname = usePathname()
   const router = useRouter()
+
+  if (pathname.startsWith('/admin')) return null
   const [showAuth, setShowAuth] = useState(false)
   const [authRedirect, setAuthRedirect] = useState('/bookings')
   const [userEmail, setUserEmail] = useState<string | null>(null)
