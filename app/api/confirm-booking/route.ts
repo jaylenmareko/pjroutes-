@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
   const endTime = departEnd.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
   const departureWindow = `${dateStr}, ${startTime} – ${endTime}`
   const totalFormatted = `$${(buyerPrice / 100).toLocaleString()}`
-  const paymentLabel = paymentMethod === 'ach' ? 'Bank transfer (ACH)' : 'Credit card'
+  const paymentLabel = 'Bank transfer (ACH)'
   const amenities = [
     flight.has_wifi && 'Wi-Fi',
     flight.pets_allowed && 'Pets allowed',

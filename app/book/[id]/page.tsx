@@ -115,8 +115,8 @@ function BookingForm({ flightId, flight, total, clientSecret }: {
       </div>
 
       <div className="card p-5 space-y-3">
-        <h2 className="font-semibold text-ink text-sm">Payment</h2>
-        <p className="text-xs text-muted">Pay by card or bank transfer. Bank transfer recommended for large bookings — no card limits, lower fees.</p>
+        <h2 className="font-semibold text-ink text-sm">Bank transfer</h2>
+        <p className="text-xs text-muted">Connect your bank account securely via Stripe. Instant verification — no card limits, no holds.</p>
         <PaymentElement />
       </div>
 

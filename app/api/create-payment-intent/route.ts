@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
   const intent = await stripe.paymentIntents.create({
     amount: buyerPrice,
     currency: 'usd',
-    payment_method_types: ['card', 'us_bank_account'],
+    payment_method_types: ['us_bank_account'],
     payment_method_options: {
       us_bank_account: {
         financial_connections: { permissions: ['payment_method'] },
