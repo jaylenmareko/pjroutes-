@@ -1,7 +1,6 @@
 ﻿export const dynamic = 'force-dynamic'
 import Link from 'next/link'
 import SearchBar from '@/components/flights/SearchBar'
-import AlertSignupForm from '@/components/ui/AlertSignupForm'
 import { Users, Zap, Shield, RefreshCw } from 'lucide-react'
 
 export default async function HomePage() {
@@ -131,14 +130,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── ROUTE ALERT ── */}
-      <section className="bg-surface py-16">
-        <div className="max-w-2xl mx-auto px-4 text-center">
-          <h2 className="text-2xl font-bold text-ink mb-2">Get notified when your route lists</h2>
-          <p className="text-muted text-sm mb-6">We&apos;ll email you the moment a matching empty leg is available.</p>
-          <AlertSignupForm />
-        </div>
-      </section>
     </>
   )
 }

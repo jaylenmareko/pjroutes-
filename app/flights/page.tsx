@@ -3,7 +3,6 @@ import { supabase } from '@/lib/clients/supabase'
 import { Flight } from '@/lib/types'
 import FlightCard from '@/components/flights/FlightCard'
 import SearchBar from '@/components/flights/SearchBar'
-import AlertSignupForm from '@/components/ui/AlertSignupForm'
 import Link from 'next/link'
 import { LayoutGrid, LayoutList } from 'lucide-react'
 
@@ -184,10 +183,8 @@ export default async function FlightsPage({ searchParams }: Props) {
           <div className="py-24 text-center">
             <div className="text-6xl mb-4 opacity-20">✈</div>
             <h2 className="text-xl font-semibold text-ink mb-2">No flights found</h2>
-            <p className="text-muted text-sm mb-8">Try adjusting your search, or set an alert and we&apos;ll notify you when one lists.</p>
-            <div className="max-w-xl mx-auto">
-              <AlertSignupForm />
-            </div>
+            <p className="text-muted text-sm mb-8">Try adjusting your search — new empty legs are listed daily.</p>
+            <Link href="/" className="btn-primary">Back to home</Link>
           </div>
         ) : isGrid ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
