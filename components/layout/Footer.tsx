@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -7,19 +7,7 @@ import AuthModal from '@/components/auth/AuthModal'
 
 export default function Footer() {
   const router = useRouter()
-  const [email, setEmail] = useState('')
-  const [subscribed, setSubscribed] = useState(false)
   const [showAuth, setShowAuth] = useState(false)
-
-  async function handleSubscribe(e: React.FormEvent) {
-    e.preventDefault()
-    await fetch('/api/alerts', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, from: 'any', to: 'any' }),
-    })
-    setSubscribed(true)
-  }
 
   async function handleOperatorsClick(e: React.MouseEvent) {
     e.preventDefault()
@@ -39,45 +27,16 @@ export default function Footer() {
   return (
     <>
       <footer className="bg-white border-t border-border mt-0">
-        {/* Email subscribe bar */}
-        <div className="border-b border-border py-10 px-4">
-          <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-            <div>
-              <p className="text-xs font-semibold text-muted uppercase tracking-widest mb-1">Get Weekly Flight Deals</p>
-              <p className="text-sm text-muted">Best deals and personalized recommendations.</p>
-            </div>
-            {subscribed ? (
-              <p className="text-sm font-medium text-green-600">You&apos;re subscribed.</p>
-            ) : (
-              <form onSubmit={handleSubscribe} className="flex gap-2">
-                <input
-                  type="email"
-                  required
-                  placeholder="Your email"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  className="input w-60"
-                />
-                <button type="submit" className="btn-primary">Subscribe</button>
-              </form>
-            )}
-          </div>
-        </div>
-
-        {/* Main footer */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
-            {/* Brand */}
             <div className="col-span-2 sm:col-span-1">
               <span className="font-bold text-ink text-lg">PJRoutes</span>
             </div>
 
-            {/* Explore */}
             <div>
               <p className="text-xs font-semibold text-ink uppercase tracking-wider mb-3">Explore</p>
               <div className="space-y-2">
                 <Link href="/flights" className="block text-sm text-muted hover:text-ink transition-colors">Search Flights</Link>
-                <Link href="/flights" className="block text-sm text-muted hover:text-ink transition-colors">Browse Routes</Link>
                 <button
                   onClick={handleOperatorsClick}
                   className="block text-sm text-muted hover:text-ink transition-colors text-left"
@@ -87,7 +46,6 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Company */}
             <div>
               <p className="text-xs font-semibold text-ink uppercase tracking-wider mb-3">Company</p>
               <div className="space-y-2">
@@ -97,7 +55,6 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Legal */}
             <div>
               <p className="text-xs font-semibold text-ink uppercase tracking-wider mb-3">Legal</p>
               <div className="space-y-2">
