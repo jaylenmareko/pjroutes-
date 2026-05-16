@@ -25,7 +25,7 @@ export default async function HomePage() {
             <h1 className="text-5xl sm:text-6xl font-extrabold text-ink leading-[1.05] tracking-tight mb-4">
               Fly private.<br />
               Skip the terminal.<br />
-              <span className="text-primary">Save hours.</span>
+              <span className="text-primary">Save time.</span>
             </h1>
             <p className="text-lg text-muted mb-8 leading-relaxed">
               Book empty-leg private jet flights at a fraction of full charter rates. No membership, no brokers.
