@@ -7,6 +7,17 @@ import { stripe } from '@/lib/clients/stripe'
 export async function POST(req: NextRequest) {
   const { flightId, paymentIntentId, paymentMethod, passenger } = await req.json()
 
+  // Verify Stripe payment actually succeeded before doing anything
+  let stripeIntent
+  try {
+    stripeIntent = await stripe.paymentIntents.retrieve(paymentIntentId)
+  } catch {
+    return NextResponse.json({ error: 'Invalid payment' }, { status: 400 })
+  }
+  if (stripeIntent.status !== 'succeeded' && stripeIntent.status !== 'processing') {
+    return NextResponse.json({ error: 'Payment not completed' }, { status: 402 })
+  }
+
   const { data: flight } = await supabaseAdmin.from('flights').select('*').eq('id', flightId).single()
   if (!flight) return NextResponse.json({ error: 'Flight not found' }, { status: 404 })
 
