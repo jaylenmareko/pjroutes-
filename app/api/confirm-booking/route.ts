@@ -154,19 +154,5 @@ export async function POST(req: NextRequest) {
     `,
   })
 
-  // Follow-up after 24h — "other routes you might like"
-  await getResend().emails.send({
-    from: 'support@pjroutes.com',
-    to: passenger.email,
-    subject: 'More empty legs on your routes',
-    scheduledAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
-    html: `
-      <div style="font-family:Inter,sans-serif;max-width:500px;margin:0 auto;padding:24px">
-        <p>Hope the flight was smooth.</p>
-        <p>We have more empty legs available. <a href="${appUrl}/flights" style="color:#8C1C1C;font-weight:600">Browse available flights →</a></p>
-      </div>
-    `,
-  })
-
   return NextResponse.json({ bookingId: booking?.id })
 }
