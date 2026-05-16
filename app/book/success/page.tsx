@@ -76,7 +76,7 @@ function SuccessContent() {
       </div>
       <h1 className="text-3xl font-extrabold text-ink mb-2">You&apos;re booked.</h1>
       <p className="text-muted mb-2">Check your email — receipt, FBO address, and departure window are all in there.</p>
-      <p className="text-muted text-sm mb-8">Expect a personal call from the operator 24–48 hrs before departure.</p>
+      <p className="text-muted text-sm mb-8">If anything changes last minute, the operator will call you 24–48 hours in advance.</p>
       <Link href="/flights" className="btn-primary">Browse more flights</Link>
     </div>
   )

@@ -77,7 +77,7 @@ export async function POST(req: NextRequest) {
       <div style="font-family:Inter,sans-serif;max-width:540px;margin:0 auto;padding:32px 24px">
         <p style="font-size:13px;color:#6B7280;margin:0 0 8px">PJRoutes</p>
         <h1 style="font-size:24px;font-weight:700;color:#0A0A0A;margin:0 0 4px">You're booked.</h1>
-        <p style="color:#6B7280;margin:0 0 28px">Your booking is confirmed. Show up at the FBO — skip the terminal, board directly. Expect a personal call from the operator 24–48 hrs before departure.</p>
+        <p style="color:#6B7280;margin:0 0 28px">Your booking is confirmed. Everything you need is below — show up at the FBO, skip the terminal, and board directly. If anything changes last minute, the operator will call you 24–48 hours in advance.</p>
 
         <div style="background:#F9FAFB;border-radius:12px;padding:20px;margin-bottom:24px">
           <p style="font-size:18px;font-weight:700;color:#0A0A0A;margin:0 0 16px">${flight.from_city} (${flight.from_airport}) → ${flight.to_city} (${flight.to_airport})</p>
@@ -85,6 +85,7 @@ export async function POST(req: NextRequest) {
             ${row('Date', dateStr)}
             ${row('Departure window', `${startTime} – ${endTime}`)}
             ${flight.fbo_address ? row('FBO address', flight.fbo_address) : ''}
+            ${flight.passenger_instructions ? row('Arrival instructions', flight.passenger_instructions) : ''}
             ${row('Aircraft', `${flight.aircraft_type}`)}
             ${row('Tail number', flight.aircraft_tail)}
             ${row('Passengers', `${passenger.count}`)}
