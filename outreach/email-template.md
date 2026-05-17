@@ -8,15 +8,14 @@
 
 Hey [First Name],
 
-I run PJRoutes.com — a marketplace specifically for empty leg flights. Your empty legs get listed, passengers book and pay through the platform, and you confirm, get paid, and fly.
+I run PJRoutes.com — a marketplace built specifically for empty leg flights.
 
-No catch — you get paid for the few empty legs you have a month.
+You set your price. We list it, handle booking, and collect payment from the passenger. You confirm, get paid, and fly. We add a 25% fee on top — the customer pays it, not you.
 
-We add a fee to the customer on top of what you set the price as.
-
-Would you be open to a quick 5-minute call this week to see if it makes sense for your operation?
+Would you be open to a quick 5-minute call this week?
 
 — Jaylen Davis
 PJRoutes
+jaylen@pjroutes.com
 314-503-9422
 pjroutes.com
