@@ -40,12 +40,12 @@ Empty-leg private jet marketplace. Operators submit flights → admin approves �
 - **Service role key:** `***REMOVED***`
 
 ### Stripe
-- **Dashboard (active — Jaylen Davis):** https://dashboard.stripe.com/acct_1TQYWuFAhGnz11V8/dashboard
-- **Dashboard (old — PJ Routes, violation flagged):** https://dashboard.stripe.com/acct_1TWM1EJVkNqyNYUy/dashboard
+- **Dashboard (active — creekpressurewashing@gmail.com):** https://dashboard.stripe.com/acct_1TWM1EJVkNqyNYUy/dashboard
+- **Dashboard (Topic Launch review — jaylenmarekodavis28@gmail.com):** https://dashboard.stripe.com/acct_1TQYWuFAhGnz11V8/dashboard
 - **Dashboard (sandbox):** https://dashboard.stripe.com/acct_1TWM1qJXkXHZkpBt/test/dashboard
-- **Live publishable key:** `pk_live_51TQYWuFAhGnz11V8hc1NhFtwUxfO4fRhB1cen0v5So1agiOjhrzvaol9HtA2eBa08ouSbSwjN6rJJb7oYx3W1Szg0035TBaB4N`
-- **Live secret key:** `STRIPE_SECRET_KEY_REMOVED`
-- **Status:** Active, no violations — "Jaylen Davis" personal account, framed as travel marketplace
+- **Live publishable key:** `***REMOVED***`
+- **Live secret key:** `***REMOVED***`
+- **Status:** ✅ charges_enabled + payouts_enabled — fully live, no restrictions
 
 ### Resend
 - **Dashboard:** https://resend.com
