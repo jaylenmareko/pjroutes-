@@ -21,7 +21,17 @@ export async function POST(req: NextRequest) {
 
   const buyerPrice = Math.round(flight.price * (1 + PLATFORM_FEE))
 
-  const intent = await stripe.paymentIntents.create({
+  // Get operator's stripe account for auto-split
+  const { data: flightFull } = await supabase
+    .from('flights')
+    .select('stripe_account_id')
+    .eq('id', flightId)
+    .single()
+
+  const platformFeeAmount = Math.round(flight.price * PLATFORM_FEE)
+  const operatorAmount = flight.price
+
+  const intentParams: Record<string, unknown> = {
     amount: buyerPrice,
     currency: 'usd',
     payment_method_types: ['us_bank_account'],
@@ -32,10 +42,19 @@ export async function POST(req: NextRequest) {
     },
     metadata: {
       flightId,
-      operator_payout: flight.price,
-      platform_fee: Math.round(flight.price * PLATFORM_FEE),
+      operator_payout: operatorAmount,
+      platform_fee: platformFeeAmount,
     },
-  })
+  }
+
+  // Auto-split if operator has a connected account
+  if (flightFull?.stripe_account_id) {
+    intentParams.application_fee_amount = platformFeeAmount
+    intentParams.transfer_data = { destination: flightFull.stripe_account_id }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const intent = await stripe.paymentIntents.create(intentParams as any)
 
   return NextResponse.json({ clientSecret: intent.client_secret, total: buyerPrice })
 }

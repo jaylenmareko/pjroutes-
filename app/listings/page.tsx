@@ -66,9 +66,22 @@ export default function MyListingsPage() {
             <h1 className="text-3xl font-extrabold text-ink mb-1">My Listings</h1>
             <p className="text-muted text-sm">{email}</p>
           </div>
-          <Link href="/operator" className="btn-primary py-2 px-4 text-sm">
-            + New listing
-          </Link>
+          <div className="flex gap-2">
+            <button
+              onClick={async () => {
+                const res = await fetch('/api/connect/onboard', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) })
+                const data = await res.json()
+                if (data.alreadyConnected) alert('Your bank account is already connected.')
+                else if (data.url) window.location.href = data.url
+              }}
+              className="btn-secondary py-2 px-4 text-sm"
+            >
+              Manage payouts
+            </button>
+            <Link href="/operator" className="btn-primary py-2 px-4 text-sm">
+              + New listing
+            </Link>
+          </div>
         </div>
 
         {listings.length === 0 ? (

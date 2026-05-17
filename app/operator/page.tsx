@@ -20,6 +20,8 @@ export default function OperatorPage() {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [connectUrl, setConnectUrl] = useState<string | null>(null)
+  const [alreadyConnected, setAlreadyConnected] = useState(false)
   const [photos, setPhotos] = useState<{ url: string; name: string }[]>([])
   const [uploading, setUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -82,6 +84,9 @@ export default function OperatorPage() {
         const data = await res.json().catch(() => ({}))
         setError(data.error || 'Submission failed. Please check all fields and try again.')
       } else {
+        const data = await res.json()
+        setConnectUrl(data.connectUrl || null)
+        setAlreadyConnected(data.alreadyConnected || false)
         setSubmitted(true)
       }
     } catch {
@@ -99,7 +104,25 @@ export default function OperatorPage() {
             <Shield className="text-green-600" size={24} />
           </div>
           <h1 className="text-2xl font-extrabold text-ink mb-2">Submission received.</h1>
-          <p className="text-muted text-sm">We review all listings within 24 hours. We&apos;ll reach out if we need anything.</p>
+          <p className="text-muted text-sm mb-6">We review all listings within 24 hours. We&apos;ll reach out if we need anything.</p>
+
+          {alreadyConnected ? (
+            <div className="rounded-xl bg-green-50 border border-green-100 px-4 py-3 text-sm text-green-700">
+              ✓ Your bank account is already connected — payouts are automatic when flights book.
+            </div>
+          ) : connectUrl ? (
+            <div className="rounded-xl bg-surface border border-border p-5 text-left">
+              <p className="font-semibold text-ink text-sm mb-1">One more step — connect your bank</p>
+              <p className="text-xs text-muted mb-4">Connect your bank account so payouts land automatically when your flight books. Takes 2 minutes via Stripe.</p>
+              <a
+                href={connectUrl}
+                className="btn-primary w-full justify-center text-sm py-3 inline-flex"
+              >
+                Connect bank account →
+              </a>
+              <p className="text-xs text-muted mt-3 text-center">You can also do this later from My Listings.</p>
+            </div>
+          ) : null}
         </div>
       </div>
     )
