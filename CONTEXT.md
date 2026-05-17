@@ -40,13 +40,12 @@ Empty-leg private jet marketplace. Operators submit flights → admin approves �
 - **Service role key:** `***REMOVED***`
 
 ### Stripe
-- **Dashboard (live):** https://dashboard.stripe.com/acct_1TWM1EJVkNqyNYUy/dashboard
+- **Dashboard (active — Jaylen Davis):** https://dashboard.stripe.com/acct_1TQYWuFAhGnz11V8/dashboard
+- **Dashboard (old — PJ Routes, violation flagged):** https://dashboard.stripe.com/acct_1TWM1EJVkNqyNYUy/dashboard
 - **Dashboard (sandbox):** https://dashboard.stripe.com/acct_1TWM1qJXkXHZkpBt/test/dashboard
-- **Live publishable key:** `***REMOVED***`
-- **Live secret key:** `***REMOVED***`
-- **Test publishable key:** `pk_test_51TWM1qJXkXHZkpBtLi1rcRuxtfLfFrdXn7qicWHmBUPrZ8y4Pu4amDzGPzLfQEjQRlaHgUr6YFZ8waghZ24XhVC400b2uXAHr0`
-- **Test secret key:** `sk_test_REMOVED`
-- **Status:** Account under review (2-3 days) — live keys set, payments live once review clears
+- **Live publishable key:** `pk_live_51TQYWuFAhGnz11V8hc1NhFtwUxfO4fRhB1cen0v5So1agiOjhrzvaol9HtA2eBa08ouSbSwjN6rJJb7oYx3W1Szg0035TBaB4N`
+- **Live secret key:** `STRIPE_SECRET_KEY_REMOVED`
+- **Status:** Active, no violations — "Jaylen Davis" personal account, framed as travel marketplace
 
 ### Resend
 - **Dashboard:** https://resend.com
