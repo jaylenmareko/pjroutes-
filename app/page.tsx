@@ -28,13 +28,13 @@ export default async function HomePage() {
               <span className="text-primary">Empty leg flights.</span>
             </h1>
             <p className="text-lg text-muted mb-8 leading-relaxed">
-              Book empty-leg private jet flights at a fraction of full charter rates. No membership, no brokers.
+              Book your private jet like a hotel — instant pricing, no waiting for quotes. Empty-leg flights at a fraction of full charter rates. No membership, no brokers.
             </p>
             <Link href="/flights" className="btn-primary text-base px-8 py-4 inline-flex">
               Search Flights →
             </Link>
             <div className="flex flex-wrap gap-x-6 gap-y-2 mt-6">
-              {['Verified Part 135 operators', 'No membership fees', 'Book in minutes'].map(t => (
+              {['Verified Part 135 operators', 'No membership fees', 'No broker fees', 'Book in minutes'].map(t => (
                 <div key={t} className="flex items-center gap-1.5 text-sm text-muted">
                   <svg className="w-4 h-4 text-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
