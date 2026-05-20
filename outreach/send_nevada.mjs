@@ -1,27 +1,28 @@
-import { readFileSync, writeFileSync } from 'fs'
+/**
+ * Send outreach to Nevada operators with emails
+ */
 
+import { readFileSync, writeFileSync } from 'fs'
+import { dirname, join } from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const CSV_PATH = join(__dirname, 'nevada-operators.csv')
 const RESEND_API_KEY = '***REMOVED***'
 const FROM = 'Jaylen Davis <jaylen@pjroutes.com>'
-const BATCH_SIZE = 50   // send 50 today, run again tomorrow for the rest
-const DELAY_MS = 1500   // 1.5s between sends to avoid spam flags
-
-import { fileURLToPath } from 'url'
-import { dirname, join } from 'path'
-const __dirname = dirname(fileURLToPath(import.meta.url))
-const CSV_PATH = join(__dirname, 'tier1-operators-enriched.csv')
+const DELAY_MS = 1500
 
 function parseCSV(text) {
   const lines = text.split('\n').filter(l => l.trim())
   const headers = parseRow(lines[0])
-  return lines.slice(1).map(line => {
+  return { headers, rows: lines.slice(1).map(line => {
     const vals = parseRow(line)
     return Object.fromEntries(headers.map((h, i) => [h, vals[i] ?? '']))
-  })
+  })}
 }
 
 function parseRow(line) {
-  const result = []
-  let cur = '', inQuote = false
+  const result = []; let cur = '', inQuote = false
   for (const ch of line) {
     if (ch === '"') { inQuote = !inQuote }
     else if (ch === ',' && !inQuote) { result.push(cur.trim()); cur = '' }
@@ -32,32 +33,29 @@ function parseRow(line) {
 }
 
 function toCSV(rows, headers) {
-  const escape = v => v.includes(',') || v.includes('"') ? `"${v.replace(/"/g, '""')}"` : v
-  return [headers.join(','), ...rows.map(r => headers.map(h => escape(r[h] ?? '')).join(','))].join('\n')
+  const escape = v => (String(v||'').includes(',') || String(v||'').includes('"')) ? `"${String(v||'').replace(/"/g,'""')}"` : String(v||'')
+  return [headers.join(','), ...rows.map(r => headers.map(h => escape(r[h])).join(','))].join('\n')
 }
 
-function buildEmail(company) {
-  return `Hey there,
+function buildEmail(name) {
+  const firstName = name.split(' ')[0]
+  return `Hey ${firstName},
 
 I list empty legs for Part 135 operators at pjroutes.com. You set the price, we add 25% on top — customer pays it, not you.
 
 Open to a quick call?
 
-— Jaylen Davis
-jaylen@pjroutes.com
-314-503-9422
-pjroutes.com`
+— Jaylen Davis · pjroutes.com · 314-503-9422`
 }
 
-async function sendEmail(to, company) {
+async function sendEmail(to, name) {
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { 'Authorization': `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      from: FROM,
-      to,
+      from: FROM, to,
       subject: 'Empty legs sitting on your schedule?',
-      text: buildEmail(company),
+      text: buildEmail(name),
     }),
   })
   const data = await res.json()
@@ -68,16 +66,19 @@ async function sendEmail(to, company) {
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)) }
 
 const raw = readFileSync(CSV_PATH, 'utf8')
-const rows = parseCSV(raw)
-const headers = Object.keys(rows[0])
+const { headers, rows } = parseCSV(raw)
 
-const queue = rows.filter(r => r['Email']?.includes('@') && r['Contacted']?.trim() === 'No')
-const batch = queue.slice(0, BATCH_SIZE)
+const queue = rows.filter(r =>
+  r['Email']?.includes('@') &&
+  r['Contacted']?.trim() !== 'Yes'
+)
 
-console.log(`Total unsent: ${queue.length} | Sending now: ${batch.length}`)
+console.log(`Nevada send queue: ${queue.length}`)
+queue.forEach(r => console.log(` - ${r['Operator Name']} <${r['Email']}>`))
+console.log()
 
 let sent = 0, failed = 0
-for (const row of batch) {
+for (const row of queue) {
   try {
     const id = await sendEmail(row['Email'].trim(), row['Operator Name'])
     row['Contacted'] = 'Yes'
@@ -86,11 +87,10 @@ for (const row of batch) {
     console.log(`✓ ${row['Email']} (${row['Operator Name']})`)
   } catch (err) {
     failed++
-    row['Notes'] = `Error: ${err.message}`
     console.error(`✗ ${row['Email']} — ${err.message}`)
   }
+  writeFileSync(CSV_PATH, toCSV(rows, headers), 'utf8')
   await sleep(DELAY_MS)
 }
 
-writeFileSync(CSV_PATH, toCSV(rows, headers), 'utf8')
-console.log(`\nDone. Sent: ${sent} | Failed: ${failed} | Remaining: ${queue.length - sent}`)
+console.log(`\nDone. Sent: ${sent} | Failed: ${failed}`)
