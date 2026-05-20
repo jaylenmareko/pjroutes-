@@ -39,14 +39,11 @@ function toCSV(rows, headers) {
 function buildEmail(company) {
   return `Hey there,
 
-I run PJRoutes.com — a marketplace built specifically for empty leg flights.
+I list empty legs for Part 135 operators at pjroutes.com. You set the price, we add 25% on top — customer pays it, not you.
 
-You set your price. We list it, handle booking, and collect payment from the passenger. You confirm, get paid, and fly. We add a 25% fee on top — the customer pays it, not you.
-
-Would you be open to a quick 5-minute call this week?
+Open to a quick call?
 
 — Jaylen Davis
-PJRoutes
 jaylen@pjroutes.com
 314-503-9422
 pjroutes.com`
