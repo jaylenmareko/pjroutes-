@@ -5,7 +5,7 @@ Empty-leg private jet marketplace. Operators submit flights → admin approves �
 
 **Current priority:** Get to first live booking.
 
-**Status:** Live at `https://pjroutes.com` — Stripe account under review (2-3 days)
+**Status:** Live at `https://pjroutes.com` — Stripe Connect enrolled and live ✅
 
 ---
 
@@ -136,11 +136,12 @@ Auth: Email OTP (6-digit codes). "Confirm email" is OFF. No magic links.
 - ✅ PJR favicon
 
 **Remaining — in order:**
-1. ~~Operator form datetime bug~~ — fixed (ISO conversion on submit)
-2. Swap Stripe live keys in Vercel env vars — keys are ready, Jaylen needs to paste into Vercel dashboard manually (browser auth issue)
-3. Enable Stripe "Send payment instruction emails" — Stripe → Settings → Customer emails → toggle on
+1. ~~Operator form datetime bug~~ — fixed
+2. ~~Swap Stripe live keys~~ — done (creekpressurewashing account, charges + payouts enabled)
+3. ~~Stripe Connect enrollment~~ — done (Marketplace model, identity verified, acknowledgements complete)
 4. Delete test data — dummy bookings + test flights before real operator listings go live
-5. Operator outreach — 402 contacts in `outreach/tier1-operators-enriched.csv`
+5. Operator outreach — 402 Tier 1 contacts sent + 158 follow-ups; Nevada (WP19) scraped (24 operators, low email yield — helicopter-heavy)
+6. Enable Stripe "Send payment instruction emails" — Stripe → Settings → Customer emails → toggle on
 
 ---
 
