@@ -12,6 +12,15 @@ async function getFlights() {
   return data || []
 }
 
+async function getFlightRequests() {
+  const { data } = await supabaseAdmin
+    .from('flight_requests')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(50)
+  return data || []
+}
+
 function FlightCard({ f, mode }: { f: Record<string, unknown>; mode: 'pending' | 'live' }) {
   return (
     <div className="card p-6">
@@ -39,7 +48,7 @@ function FlightCard({ f, mode }: { f: Record<string, unknown>; mode: 'pending' |
 }
 
 export default async function AdminPage() {
-  const flights = await getFlights()
+  const [flights, requests] = await Promise.all([getFlights(), getFlightRequests()])
   const pending = flights.filter(f => f.status === 'pending')
   const live = flights.filter(f => f.status === 'published')
 
@@ -58,6 +67,34 @@ export default async function AdminPage() {
                 <div className="text-4xl mb-3 opacity-20">✈</div>
                 No pending listings.
               </div>
+            )}
+          </div>
+        </div>
+
+        {/* Flight Requests */}
+        <div>
+          <h2 className="text-lg font-bold text-ink mb-1">Flight Requests</h2>
+          <p className="text-muted text-sm mb-6">{requests.length} concierge request{requests.length !== 1 ? 's' : ''}</p>
+          <div className="space-y-3">
+            {requests.map(r => (
+              <div key={r.id as string} className="card p-5">
+                <div className="flex items-start justify-between gap-4 flex-wrap">
+                  <div className="space-y-1">
+                    <div className="text-base font-bold text-ink">{r.from_location as string} → {r.to_location as string}</div>
+                    <div className="text-sm text-muted">{r.depart_date as string} · {(r.preferred_time as string) || 'Flexible'} · {r.passengers as number} pax</div>
+                    <div className="pt-2 border-t border-border mt-2 text-xs text-muted space-y-0.5">
+                      <div className="font-medium text-ink">{r.full_name as string}</div>
+                      <div>{r.email as string}{r.phone ? ` · ${r.phone}` : ''}</div>
+                    </div>
+                  </div>
+                  <div className="text-xs text-muted whitespace-nowrap">
+                    {new Date(r.created_at as string).toLocaleDateString()}
+                  </div>
+                </div>
+              </div>
+            ))}
+            {requests.length === 0 && (
+              <div className="text-center py-12 text-muted text-sm">No flight requests yet.</div>
             )}
           </div>
         </div>
