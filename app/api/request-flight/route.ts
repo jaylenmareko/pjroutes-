@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getResend } from '@/lib/clients/resend'
+import { supabaseAdmin } from '@/lib/clients/supabase'
 import { sanitize } from '@/lib/sanitize'
 import { rateLimit, rateLimitResponse } from '@/lib/rate-limit'
 
@@ -13,6 +14,17 @@ export async function POST(req: NextRequest) {
     name: string; email: string; phone: string
   }
   if (!from || !to || !date || !name || !email) return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
+
+  await supabaseAdmin.from('flight_requests').insert({
+    from_location: from,
+    to_location: to,
+    depart_date: date,
+    preferred_time: time || null,
+    passengers: Number(passengers) || 1,
+    full_name: name,
+    email,
+    phone: phone || null,
+  })
 
   await getResend().emails.send({
     from: 'support@pjroutes.com',
