@@ -83,12 +83,18 @@ export default function Navbar() {
           {/* Nav links — hidden on mobile */}
           <div className="hidden sm:flex items-center gap-1">
             {link('/flights', 'Flights')}
-            <Link
-              href="/#how-it-works"
+            <button
+              onClick={() => {
+                if (pathname === '/') {
+                  document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })
+                } else {
+                  router.push('/#how-it-works')
+                }
+              }}
               className="px-3 py-1.5 rounded-full text-sm font-medium transition-colors text-muted hover:text-ink"
             >
               How It Works
-            </Link>
+            </button>
             {link('/faq', 'FAQ')}
             {userEmail && (
               <>
