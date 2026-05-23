@@ -167,7 +167,7 @@ function BookingWrapper({ flightId }: { flightId: string }) {
 
   if (!flight) {
     return (
-      <div className="pt-14 min-h-screen bg-white">
+      <div className="pt-16 min-h-screen bg-white">
         <div className="max-w-lg mx-auto px-4 py-10 space-y-4">
           {[1, 2, 3].map(i => <div key={i} className="h-32 bg-surface rounded-2xl animate-pulse" />)}
         </div>
@@ -177,7 +177,7 @@ function BookingWrapper({ flightId }: { flightId: string }) {
 
   if (flight.isDemo) {
     return (
-      <div className="pt-14 min-h-screen bg-white flex items-center justify-center">
+      <div className="pt-16 min-h-screen bg-white flex items-center justify-center">
         <div className="text-center max-w-md px-4">
           <h1 className="text-2xl font-extrabold text-ink mb-2">Sample listing</h1>
           <p className="text-muted text-sm mb-6">This is a placeholder flight. Real operator listings are bookable — browse available flights to find one.</p>
@@ -189,7 +189,7 @@ function BookingWrapper({ flightId }: { flightId: string }) {
 
   if (!clientSecret) {
     return (
-      <div className="pt-14 min-h-screen bg-white">
+      <div className="pt-16 min-h-screen bg-white">
         <div className="max-w-lg mx-auto px-4 py-10 space-y-4">
           {[1, 2, 3].map(i => <div key={i} className="h-32 bg-surface rounded-2xl animate-pulse" />)}
         </div>
@@ -198,7 +198,7 @@ function BookingWrapper({ flightId }: { flightId: string }) {
   }
 
   return (
-    <div className="pt-14 min-h-screen bg-white">
+    <div className="pt-16 min-h-screen bg-white">
       <div className="max-w-lg mx-auto px-4 py-10">
         <Link href={`/flights/${flightId}`} className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-ink mb-6">
           <ArrowLeft size={14} /> Back to flight

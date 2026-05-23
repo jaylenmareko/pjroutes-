@@ -98,7 +98,7 @@ export default function OperatorPage() {
 
   if (submitted) {
     return (
-      <div className="pt-14 min-h-screen flex items-center justify-center">
+      <div className="pt-16 min-h-screen flex items-center justify-center">
         <div className="text-center max-w-md px-4">
           <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-5">
             <Shield className="text-green-600" size={24} />
@@ -133,7 +133,7 @@ export default function OperatorPage() {
   )
 
   return (
-    <div className="pt-14 min-h-screen">
+    <div className="pt-16 min-h-screen">
       <div className="bg-ink text-white py-10 px-4">
         <div className="max-w-2xl mx-auto">
           <h1 className="text-3xl font-extrabold mb-2">List an Empty Leg</h1>

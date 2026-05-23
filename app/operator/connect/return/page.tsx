@@ -23,13 +23,13 @@ function ReturnContent() {
   }, [params])
 
   if (status === 'checking') return (
-    <div className="pt-14 min-h-screen flex items-center justify-center">
+    <div className="pt-16 min-h-screen flex items-center justify-center">
       <p className="text-muted text-sm">Verifying your account...</p>
     </div>
   )
 
   if (status === 'done') return (
-    <div className="pt-14 min-h-screen flex items-center justify-center">
+    <div className="pt-16 min-h-screen flex items-center justify-center">
       <div className="text-center max-w-md px-4">
         <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-5">
           <svg className="w-7 h-7 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -44,7 +44,7 @@ function ReturnContent() {
   )
 
   return (
-    <div className="pt-14 min-h-screen flex items-center justify-center">
+    <div className="pt-16 min-h-screen flex items-center justify-center">
       <div className="text-center max-w-md px-4">
         <h1 className="text-2xl font-extrabold text-ink mb-2">Something went wrong.</h1>
         <p className="text-muted text-sm mb-6">Your payout setup didn&apos;t complete. You can try again from My Listings.</p>
@@ -56,7 +56,7 @@ function ReturnContent() {
 
 export default function ConnectReturnPage() {
   return (
-    <Suspense fallback={<div className="pt-14 min-h-screen flex items-center justify-center"><p className="text-muted text-sm">Loading...</p></div>}>
+    <Suspense fallback={<div className="pt-16 min-h-screen flex items-center justify-center"><p className="text-muted text-sm">Loading...</p></div>}>
       <ReturnContent />
     </Suspense>
   )
