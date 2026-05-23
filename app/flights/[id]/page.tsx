@@ -41,7 +41,7 @@ export default async function FlightDetailPage({ params }: { params: Promise<{ i
   ].filter(Boolean) as { icon: React.ReactNode; label: string; desc: string }[]
 
   return (
-    <div className="pt-14 min-h-screen bg-white">
+    <div className="pt-16 min-h-screen bg-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
         {/* Back */}

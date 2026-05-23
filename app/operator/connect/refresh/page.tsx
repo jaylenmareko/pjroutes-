@@ -8,7 +8,7 @@ export default function ConnectRefreshPage() {
     router.push('/listings')
   }, [router])
   return (
-    <div className="pt-14 min-h-screen flex items-center justify-center">
+    <div className="pt-16 min-h-screen flex items-center justify-center">
       <p className="text-muted text-sm">Redirecting...</p>
     </div>
   )

@@ -20,7 +20,7 @@ const STEPS = [
 
 export default function OperatorsPage() {
   return (
-    <div className="pt-14 min-h-screen flex items-center justify-center">
+    <div className="pt-16 min-h-screen flex items-center justify-center">
       <div className="max-w-2xl w-full mx-auto px-4 py-20 text-center">
         <h1 className="text-3xl font-extrabold text-ink mb-2">List an Empty Leg</h1>
         <p className="text-muted text-sm mb-14">Three steps. No commitment.</p>

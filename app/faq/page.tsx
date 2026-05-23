@@ -21,7 +21,7 @@ const OPERATOR_FAQS = [
 
 export default function FAQPage() {
   return (
-    <div className="pt-14 min-h-screen">
+    <div className="pt-16 min-h-screen">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="mb-12">
           <h1 className="text-4xl font-extrabold text-ink mb-2">Frequently Asked Questions</h1>

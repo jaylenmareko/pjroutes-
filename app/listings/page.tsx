@@ -52,14 +52,14 @@ export default function MyListingsPage() {
 
   if (loading) {
     return (
-      <div className="pt-14 min-h-screen flex items-center justify-center">
+      <div className="pt-16 min-h-screen flex items-center justify-center">
         <p className="text-muted text-sm">Loading...</p>
       </div>
     )
   }
 
   return (
-    <div className="pt-14 min-h-screen">
+    <div className="pt-16 min-h-screen">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
         <div className="flex items-center justify-between mb-8">
           <div>

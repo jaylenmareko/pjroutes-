@@ -7,7 +7,7 @@ export default async function HomePage() {
   return (
     <>
       {/* ── HERO ── */}
-      <section className="relative min-h-[580px] flex items-center pt-14 overflow-hidden bg-white">
+      <section className="relative min-h-[580px] flex items-center pt-16 overflow-hidden bg-white">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-white via-white to-primary-light/30" />
           <div className="absolute right-0 top-0 w-3/5 h-full hidden lg:block overflow-hidden">

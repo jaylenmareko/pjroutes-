@@ -73,16 +73,18 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-border shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 h-16 flex items-center gap-8">
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0 font-bold text-ink tracking-tight text-lg">
+          <Link href="/" className="flex-shrink-0 font-bold text-ink tracking-tight text-xl">
             PJRoutes
           </Link>
 
           {/* Nav links — hidden on mobile */}
-          <div className="flex-1 hidden sm:flex items-center justify-center gap-1">
+          <div className="hidden sm:flex items-center gap-1">
             {link('/flights', 'Flights')}
+            {link('/how-it-works', 'How It Works')}
+            {link('/faq', 'FAQ')}
             {userEmail && (
               <>
                 <button
@@ -104,15 +106,17 @@ export default function Navbar() {
               </>
             )}
           </div>
-          <div className="flex-1 sm:hidden" />
+
+          {/* Spacer */}
+          <div className="flex-1" />
 
           {/* Right */}
-          <div className="flex-shrink-0 flex items-center gap-2">
+          <div className="flex-shrink-0 flex items-center gap-3">
             {userEmail ? (
               <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setDropdownOpen(o => !o)}
-                  className="flex items-center gap-1.5 px-2 py-1.5 rounded-full text-sm font-medium text-muted hover:text-ink transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium text-muted hover:text-ink transition-colors border border-border hover:border-ink/20"
                 >
                   {/* Desktop: show email */}
                   <span className="hidden sm:block max-w-[140px] truncate">{userEmail}</span>
@@ -153,20 +157,20 @@ export default function Navbar() {
                 )}
               </div>
             ) : (
-              <button
-                onClick={() => requireAuth('/operator')}
-                className="btn-primary py-1.5 px-4 text-xs"
-              >
-                List a Flight
-              </button>
-            )}
-            {!userEmail && (
-              <button
-                onClick={() => requireAuth('/flights')}
-                className="px-3 py-1.5 rounded-full text-sm font-medium text-muted hover:text-ink transition-colors"
-              >
-                Sign in
-              </button>
+              <>
+                <button
+                  onClick={() => requireAuth('/flights')}
+                  className="hidden sm:block px-3 py-2 rounded-full text-sm font-medium text-muted hover:text-ink transition-colors"
+                >
+                  Sign in
+                </button>
+                <button
+                  onClick={() => requireAuth('/operator')}
+                  className="btn-primary py-2 px-5 text-sm"
+                >
+                  List a Flight
+                </button>
+              </>
             )}
           </div>
         </div>

@@ -93,7 +93,7 @@ export default async function FlightsPage({ searchParams }: Props) {
   ]
 
   return (
-    <div className="pt-14 min-h-screen">
+    <div className="pt-16 min-h-screen">
       {/* Search bar */}
       <div className="bg-ink py-5 px-4">
         <div className="max-w-7xl mx-auto">
@@ -195,6 +195,14 @@ export default async function FlightsPage({ searchParams }: Props) {
             {flights.map(f => <FlightCard key={f.id} flight={f} layout="list" />)}
           </div>
         )}
+
+        {/* Private Jet Request */}
+        <div className="mt-16 mb-8 rounded-2xl border border-border bg-surface px-8 py-10 text-center">
+          <p className="text-xs font-semibold uppercase tracking-widest text-muted mb-2">Don&apos;t See Your Route?</p>
+          <h2 className="text-2xl font-bold text-ink mb-3">Private Jet Request</h2>
+          <p className="text-muted max-w-md mx-auto mb-6">Tell us where you want to fly. Our concierge sources a vetted operator and confirms availability and pricing.</p>
+          <Link href="/contact" className="btn-primary">Request a Flight</Link>
+        </div>
       </div>
     </div>
   )

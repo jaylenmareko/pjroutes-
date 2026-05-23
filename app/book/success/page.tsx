@@ -84,7 +84,7 @@ function SuccessContent() {
 
 export default function SuccessPage() {
   return (
-    <div className="pt-14 min-h-screen flex items-center justify-center">
+    <div className="pt-16 min-h-screen flex items-center justify-center">
       <Suspense fallback={<p className="text-muted text-sm">Loading...</p>}>
         <SuccessContent />
       </Suspense>
