@@ -1,6 +1,7 @@
 ﻿export const dynamic = 'force-dynamic'
 import Link from 'next/link'
 import SearchBar from '@/components/flights/SearchBar'
+import FlightRequestForm from '@/components/flights/FlightRequestForm'
 import { Users, Zap, Shield, RefreshCw } from 'lucide-react'
 
 export default async function HomePage() {
@@ -106,6 +107,24 @@ export default async function HomePage() {
         </div>
         <div className="flex justify-center mt-8">
           <Link href="/flights" className="btn-primary px-10 py-4 text-base">Search Flights</Link>
+        </div>
+      </section>
+
+      {/* ── PRIVATE JET REQUEST ── */}
+      <section id="private-jet-request" className="bg-surface py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-muted mb-2">Don&apos;t See Your Route?</p>
+              <h2 className="text-3xl font-extrabold text-ink mb-3">Private Jet Request</h2>
+              <p className="text-muted leading-relaxed">
+                Tell us where you want to fly. Our concierge sources a vetted operator and confirms availability and pricing.
+              </p>
+            </div>
+            <div className="bg-white rounded-2xl border border-border p-6 shadow-sm">
+              <FlightRequestForm />
+            </div>
+          </div>
         </div>
       </section>
 

@@ -26,6 +26,7 @@ export default function AuthModal({ open, onClose, redirectTo }: Props) {
       setEmail('')
       setCode('')
       setError('')
+      setCooldown(0)
     }
   }, [open])
 
@@ -54,6 +55,7 @@ export default function AuthModal({ open, onClose, redirectTo }: Props) {
 
   async function sendCode(e: React.FormEvent) {
     e.preventDefault()
+    if (cooldown > 0) return
     setLoading(true)
     setError('')
     try {
