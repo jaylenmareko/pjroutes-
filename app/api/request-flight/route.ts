@@ -8,16 +8,22 @@ export async function POST(req: NextRequest) {
   if (!rateLimit(ip, { max: 5, windowMs: 60_000 })) return rateLimitResponse()
 
   const raw = await req.json()
-  const { from, to, date, time, passengers } = sanitize(raw) as {
+  const { from, to, date, time, passengers, name, email, phone } = sanitize(raw) as {
     from: string; to: string; date: string; time: string; passengers: number
+    name: string; email: string; phone: string
   }
-  if (!from || !to || !date) return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
+  if (!from || !to || !date || !name || !email) return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
 
   await getResend().emails.send({
     from: 'support@pjroutes.com',
     to: process.env.ADMIN_EMAIL!,
-    subject: `Flight Request — ${from} → ${to}`,
+    replyTo: email,
+    subject: `Flight Request — ${from} → ${to} (${name})`,
     html: `
+      <p><strong>Name:</strong> ${name}</p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Phone:</strong> ${phone || '—'}</p>
+      <hr/>
       <p><strong>Route:</strong> ${from} → ${to}</p>
       <p><strong>Date:</strong> ${date}</p>
       <p><strong>Time:</strong> ${time || 'Flexible'}</p>

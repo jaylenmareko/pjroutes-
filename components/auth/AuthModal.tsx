@@ -1,7 +1,7 @@
 ﻿'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { X, Mail } from 'lucide-react'
+import { X } from 'lucide-react'
 import { createClient } from '@/lib/clients/supabase-browser'
 
 interface Props {
@@ -150,22 +150,6 @@ export default function AuthModal({ open, onClose, redirectTo }: Props) {
               </button>
             </form>
 
-            <div className="relative my-5">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-border" />
-              </div>
-              <div className="relative flex justify-center">
-                <span className="bg-white px-3 text-xs text-muted">Or</span>
-              </div>
-            </div>
-
-            <button
-              onClick={() => {}}
-              className="w-full flex items-center justify-center gap-2.5 border border-border rounded-xl py-3 text-sm font-medium text-ink hover:bg-surface transition-colors"
-            >
-              <Mail size={15} className="text-muted" />
-              Continue with Email
-            </button>
           </>
         ) : (
           <>

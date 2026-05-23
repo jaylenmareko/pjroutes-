@@ -8,6 +8,9 @@ export default function FlightRequestForm() {
   const [date, setDate] = useState('')
   const [time, setTime] = useState('')
   const [passengers, setPassengers] = useState(1)
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'sent' | 'error'>('idle')
 
   async function handleSubmit(e: React.FormEvent) {
@@ -17,7 +20,7 @@ export default function FlightRequestForm() {
       const res = await fetch('/api/request-flight', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ from, to, date, time, passengers }),
+        body: JSON.stringify({ from, to, date, time, passengers, name, email, phone }),
       })
       setStatus(res.ok ? 'sent' : 'error')
     } catch {
@@ -111,6 +114,42 @@ export default function FlightRequestForm() {
           </button>
           <span className="text-sm text-muted">{passengers === 1 ? '1 passenger' : `${passengers} passengers`}</span>
         </div>
+      </div>
+
+      {/* Name / Email / Phone */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label className="block text-xs font-semibold text-muted uppercase tracking-wide mb-1">Full Name</label>
+          <input
+            required
+            value={name}
+            onChange={e => setName(e.target.value)}
+            placeholder="Jane Smith"
+            className="w-full border border-border rounded-xl px-4 py-3 text-sm text-ink placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition"
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-semibold text-muted uppercase tracking-wide mb-1">Phone</label>
+          <input
+            required
+            type="tel"
+            value={phone}
+            onChange={e => setPhone(e.target.value)}
+            placeholder="+1 (555) 000-0000"
+            className="w-full border border-border rounded-xl px-4 py-3 text-sm text-ink placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition"
+          />
+        </div>
+      </div>
+      <div>
+        <label className="block text-xs font-semibold text-muted uppercase tracking-wide mb-1">Email</label>
+        <input
+          required
+          type="email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          placeholder="you@example.com"
+          className="w-full border border-border rounded-xl px-4 py-3 text-sm text-ink placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition"
+        />
       </div>
 
       <button
