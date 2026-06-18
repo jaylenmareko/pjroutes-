@@ -1,5 +1,15 @@
 # PJRoutes — CONTEXT.md
 
+## Stage Contract
+
+| | |
+|---|---|
+| **Stage** | Pre-launch cleanup — first live booking |
+| **Done criteria** | First real operator listed + first real passenger booked |
+| **Next stage** | Operator acquisition at scale (outreach machine running) |
+
+---
+
 ## What This Is
 Empty-leg private jet marketplace. Operators submit flights → admin approves → passengers book. No membership, no brokers.
 
@@ -23,7 +33,7 @@ Empty-leg private jet marketplace. Operators submit flights → admin approves �
 ### Site
 - **URL:** https://pjroutes.com
 - **Admin panel:** https://pjroutes.com/admin
-- **Admin password:** `***REMOVED***`
+- **Admin password:** set via `ADMIN_PASSWORD` env var — see local credential vault (reference_pjroutes_credentials.md)
 
 ### GitHub
 - **Username:** jaylenmareko
@@ -36,20 +46,18 @@ Empty-leg private jet marketplace. Operators submit flights → admin approves �
 ### Supabase
 - **Dashboard:** https://supabase.com/dashboard/project/rjqwjfzvhkdkdjldlnqs
 - **Project URL:** `https://rjqwjfzvhkdkdjldlnqs.supabase.co`
-- **Anon key:** `***REMOVED***`
-- **Service role key:** `***REMOVED***`
+- **Anon key / Service role key:** set via env vars — see local credential vault (reference_pjroutes_credentials.md)
 
 ### Stripe
 - **Dashboard (active — creekpressurewashing@gmail.com):** https://dashboard.stripe.com/acct_1TWM1EJVkNqyNYUy/dashboard
 - **Dashboard (Topic Launch review — jaylenmarekodavis28@gmail.com):** https://dashboard.stripe.com/acct_1TQYWuFAhGnz11V8/dashboard
 - **Dashboard (sandbox):** https://dashboard.stripe.com/acct_1TWM1qJXkXHZkpBt/test/dashboard
-- **Live publishable key:** `***REMOVED***`
-- **Live secret key:** `***REMOVED***`
+- **Live publishable key / Live secret key:** set via env vars — see local credential vault (reference_pjroutes_credentials.md)
 - **Status:** ✅ charges_enabled + payouts_enabled — fully live, no restrictions
 
 ### Resend
 - **Dashboard:** https://resend.com
-- **API key:** `***REMOVED***`
+- **API key:** set via env var — see local credential vault (reference_pjroutes_credentials.md)
 - **From address:** `support@pjroutes.com`
 
 ### Operator / Passenger test accounts

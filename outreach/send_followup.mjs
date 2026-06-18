@@ -2,7 +2,8 @@ import { readFileSync, writeFileSync } from 'fs'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
 
-const RESEND_API_KEY = '***REMOVED***'
+const RESEND_API_KEY = process.env.RESEND_API_KEY
+if (!RESEND_API_KEY) throw new Error('RESEND_API_KEY env var is not set')
 const FROM = 'Jaylen Davis <jaylen@pjroutes.com>'
 const DELAY_MS = 1500
 
