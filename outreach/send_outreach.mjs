@@ -1,6 +1,7 @@
 import { readFileSync, writeFileSync } from 'fs'
 
-const RESEND_API_KEY = '***REMOVED***'
+const RESEND_API_KEY = process.env.RESEND_API_KEY
+if (!RESEND_API_KEY) throw new Error('RESEND_API_KEY env var is not set')
 const FROM = 'Jaylen Davis <jaylen@pjroutes.com>'
 const BATCH_SIZE = 50   // send 50 today, run again tomorrow for the rest
 const DELAY_MS = 1500   // 1.5s between sends to avoid spam flags
